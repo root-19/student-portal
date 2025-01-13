@@ -1,0 +1,22 @@
+
+    /* Change the background color of the Next button */
+    .introjs-nextbutton {
+        background-color: #4CAF50; /* Green color */
+        color: white;
+    }
+
+    /* Change the background color of the Back button */
+    .introjs-prevbutton {
+        background-color: #f44336; /* Red color */
+        color: white;
+    }
+
+    /* Hover effect for Next and Back buttons */
+    .introjs-nextbutton:hover {
+        background-color: #45a049; /* Darker green */
+    }
+
+    .introjs-prevbutton:hover {
+        background-color: #e53935; /* Darker red */
+    }
+

@@ -6,6 +6,7 @@
     <title>Student Portal Landing Page</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./public/css/style.css">
     <!-- Intro.js CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
 </head>
@@ -45,7 +46,7 @@
             <nav class="mt-4">
                 <ul class="space-y-6">
                     <li><a href="#home" class="block text-black hover:text-blue-300">Home</a></li>
-                    <li><a href="#login" class="block text-black hover:text-blue-300">Login</a></li>
+                    <li><a href="./" class="block text-black hover:text-blue-300">Login</a></li>
                     <li><a href="#about" class="block text-black hover:text-blue-300">About</a></li>
                     <li><a href="#contact" class="block text-black hover:text-blue-300">Contact</a></li>
                     <li><a href="#features" class="block text-black hover:text-blue-300">Features</a></li>

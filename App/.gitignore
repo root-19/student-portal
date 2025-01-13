@@ -1,5 +1,3 @@
 # Ignore the env directory (for environment variables)
-.env/
-
-
+.env
 /vendor/
