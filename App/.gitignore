@@ -1,0 +1,5 @@
+# Ignore the env directory (for environment variables)
+.env
+
+
+vendor/
