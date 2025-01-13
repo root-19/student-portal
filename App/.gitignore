@@ -1,3 +1,5 @@
-# Ignore the env directory (for environment variables)
+# Ignore .env file
 .env
+
+# Ignore vendor directory (commonly used in PHP projects with Composer)
 /vendor/
