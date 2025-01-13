@@ -30,7 +30,7 @@
         <nav id="navLinks" class="hidden lg:flex space-x-6">
             <ul class="flex space-x-6">
                 <li><a href="#home" class="hover:text-blue-300">Home</a></li>
-                <li><a href="#login" class="hover:text-blue-300">Login</a></li>
+                <li><a href="./login.php" class="hover:text-blue-300">Login</a></li>
                 <li><a href="#about" class="hover:text-blue-300">About</a></li>
                 <li><a href="#contact" class="hover:text-blue-300">Contact</a></li>
                 <li><a href="#features" class="hover:text-blue-300">Features</a></li>
@@ -46,7 +46,7 @@
             <nav class="mt-4">
                 <ul class="space-y-6">
                     <li><a href="#home" class="block text-black hover:text-blue-300">Home</a></li>
-                    <li><a href="./" class="block text-black hover:text-blue-300">Login</a></li>
+                    <li><a href="./login.php" class="block text-black hover:text-blue-300">Login</a></li>
                     <li><a href="#about" class="block text-black hover:text-blue-300">About</a></li>
                     <li><a href="#contact" class="block text-black hover:text-blue-300">Contact</a></li>
                     <li><a href="#features" class="block text-black hover:text-blue-300">Features</a></li>
@@ -123,54 +123,7 @@
 
     <!-- Intro.js Script -->
     <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
-    <script>
-        const hamburger = document.getElementById("hamburger");
-        const mobileMenu = document.getElementById("mobileMenu");
-        const closeMobileMenu = document.getElementById("closeMobileMenu");
-
-        hamburger.addEventListener("click", function() {
-            mobileMenu.classList.remove("hidden");
-        });
-
-        closeMobileMenu.addEventListener("click", function() {
-            mobileMenu.classList.add("hidden");
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            introJs().setOptions({
-                steps: [
-                    { 
-                        element: document.querySelector("#header"),
-                        intro: "Welcome to the Student Portal header section. This is where you navigate through the site." 
-                    },
-                    { 
-                        element: document.querySelector("#home"),
-                        intro: "This is the homepage. You can explore your courses, grades, and other features here." 
-                    },
-                    { 
-                        element: document.querySelector("#login"),
-                        intro: "Click here to log in to your account and access the portal."
-                    },
-                    { 
-                        element: document.querySelector("#about"),
-                        intro: "Learn more about the features and services of our portal."
-                    },
-                    { 
-                        element: document.querySelector("#contact"),
-                        intro: "Get in touch with us through this section."
-                    },
-                    { 
-                        element: document.querySelector("#features"),
-                        intro: "Explore the features of the portal, such as grade tracking and notifications."
-                    },
-                    { 
-                        element: document.querySelector("#courses"),
-                        intro: "Check out available courses you can take through the portal."
-                    }
-                ]
-            }).start();
-        });
-    </script>
+    <script src="./Public/js/index.js"></script>
 
 </body>
 </html>

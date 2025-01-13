@@ -37,16 +37,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <link rel="stylesheet" href="./public/style.css" />
 </head>
 <style>
-    /* Add background image */
     body {
-        background-image: url('./Storage/image/house.jpg');
-        background-position: center;  /* Center the image */
-        background-repeat: no-repeat;  /* Prevent the image from repeating */
-        background-attachment: fixed;  /* Make the background image fixed */
+        background-image: url('./Storage/image/background.jpg');
+        background-position: center;  
+        background-repeat: no-repeat; 
+        background-attachment: fixed;  
+        background-size: cover;
+       
     }
 </style>
 <body class="flex justify-center items-center h-screen">
-    <div class="bg-gray-700 bg-opacity-50 fixed inset-0 flex items-center justify-center z-50">
+    <div class=" bg-opacity-50 fixed inset-0 flex items-center justify-center z-50">
         <div class="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg w-96">
             <h2 class="text-2xl font-bold mb-6 text-center">Welcome</h2>
             
