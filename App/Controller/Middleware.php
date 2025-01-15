@@ -3,7 +3,7 @@ class Middleware {
     
     // Check if user is authenticated
     public static function auth($role = null) {
-        session_start();
+        // session_start(); 
 
         // If a role is provided, check if the user matches the required role
         if ($role && (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== $role)) {
@@ -14,7 +14,7 @@ class Middleware {
 
     // Redirect authenticated users away from login or register pages
     public static function guest() {
-        session_start();
+        // session_start();
 
         if (isset($_SESSION['user_id'])) {
             // Redirect authenticated users to their respective pages
@@ -36,7 +36,7 @@ class Middleware {
 
     // Restrict access to admin pages for non-admin users
     public static function restrictAdminPage() {
-        session_start();
+        // session_start();
 
         // If user is logged in but doesn't have admin rights, restrict access
         if (isset($_SESSION['user_role']) && $_SESSION['user_role'] !== 'admin') {
