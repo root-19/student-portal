@@ -55,6 +55,11 @@ Middleware::auth('user');
             </a>
           </li>
           <li>
+            <a href="./vote.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+            Vote events
+            </a>
+          </li>
+          <li>
             <a href="./logout.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Logout
             </a>
