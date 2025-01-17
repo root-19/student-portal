@@ -1,6 +1,8 @@
 <?php
-require_once "../../Controller/Middleware.php";
-Middleware::auth('admin');
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

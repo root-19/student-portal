@@ -2,7 +2,8 @@
 include "./layout/sidebar.php";
 require_once __DIR__ . '/../../Model/Module.php';
 require_once __DIR__ . '/../../Database/Database.php';
-
+// require_once "../../Controller/Middleware.php";
+// Middleware::auth('admin');
 // Fetch the modules
 $database = new Database();
 $db = $database->connect();
