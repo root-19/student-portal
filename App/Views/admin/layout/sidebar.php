@@ -35,6 +35,16 @@ Middleware::auth('admin');
             </a>
           </li>
           <li>
+            <a href="./announcement.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Announcement
+            </a>
+          </li>
+          <li>
+            <a href="./module.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+             Send module
+            </a>
+          </li>
+          <li>
             <a href="./profile.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Profile
             </a>

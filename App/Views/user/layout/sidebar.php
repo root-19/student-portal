@@ -10,7 +10,7 @@ Middleware::auth('user');
   <title>USER || side</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-neutral-900 text-white font-sans">
+<body class="bg-slate-50 text-white font-sans">
 
   <!-- Main Container -->
   <div class="flex h-screen overflow-hidden">
@@ -40,8 +40,18 @@ Middleware::auth('user');
             </a>
           </li>
           <li>
+            <a href="./announcement.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Announcement
+            </a>
+          </li>
+          <li>
             <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Settings
+            </a>
+          </li>
+          <li>
+            <a href="./module.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+            Module
             </a>
           </li>
           <li>
@@ -76,8 +86,8 @@ Middleware::auth('user');
         <h1 class="text-3xl font-bold text-orange-500 mb-4">Welcome to My App</h1>
         <p class="text-gray-700">This is the main content area. Resize the screen to see the responsive sidebar in action!</p>
       </main> -->
-    </div>
-  </div>
+    <!-- </div>
+  </div> -->
 
   <!-- JavaScript -->
   <script>

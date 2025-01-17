@@ -3,7 +3,7 @@ class Middleware {
     
     // Check if user is authenticated
     public static function auth($role = null) {
-        // session_start(); 
+        session_start(); 
 
         // If a role is provided, check if the user matches the required role
         if ($role && (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== $role)) {

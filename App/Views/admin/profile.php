@@ -6,7 +6,7 @@ require_once '../../Model/studentProfile.php';
 require_once '../../Database/Database.php';
 
 if (!isset($_SESSION['user_id'])) {
-    die("User not logged in.");
+    // die("User not logged in.");
 }
 
 $userId = (int) $_SESSION['user_id'];
@@ -39,13 +39,13 @@ if (!$user) {
             <div><strong>Middle Initial:</strong> <?= htmlspecialchars($user['middle_initial'] ?? 'N/A') ?></div>
             <div><strong>Surname:</strong> <?= htmlspecialchars($user['surname'] ?? 'N/A') ?></div>
             <div><strong>Gender:</strong> <?= htmlspecialchars($user['gender'] ?? 'N/A') ?></div>
-            <div><strong>Scholar:</strong> <?= htmlspecialchars($user['scholar'] ?? 'N/A') ?></div>
-            <div><strong>LRN Number:</strong> <?= htmlspecialchars($user['lrn_number'] ?? 'N/A') ?></div>
+            <!-- <div><strong>Scholar:</strong> <?= htmlspecialchars($user['scholar'] ?? 'N/A') ?></div>
+            <div><strong>LRN Number:</strong> <?= htmlspecialchars($user['lrn_number'] ?? 'N/A') ?></div> -->
             <div><strong>School ID:</strong> <?= htmlspecialchars($user['school_id'] ?? 'N/A') ?></div>
-            <div><strong>Date of Birth:</strong> <?= htmlspecialchars($user['date_of_birth'] ?? 'N/A') ?></div>
-            <div><strong>Grade:</strong> <?= htmlspecialchars($user['grade'] ?? 'N/A') ?></div>
-            <div><strong>Section:</strong> <?= htmlspecialchars($user['section'] ?? 'N/A') ?></div>
-            <div><strong>Strand:</strong> <?= htmlspecialchars($user['strand'] ?? 'N/A') ?></div>
+            <!-- <div><strong>Date of Birth:</strong> <?= htmlspecialchars($user['date_of_birth'] ?? 'N/A') ?></div>
+            <div><strong>Grade:</strong> <?= htmlspecialchars($user['grade'] ?? 'N/A') ?></div> -->
+            <!-- <div><strong>Section:</strong> <?= htmlspecialchars($user['section'] ?? 'N/A') ?></div>
+            <div><strong>Strand:</strong> <?= htmlspecialchars($user['strand'] ?? 'N/A') ?></div> -->
             <div><strong>Phone Number:</strong> <?= htmlspecialchars($user['phone_number'] ?? 'N/A') ?></div>
             <div><strong>Email:</strong> <?= htmlspecialchars($user['email'] ?? 'N/A') ?></div>
             </div>
