@@ -14,15 +14,15 @@ class Auth {
     public function registerUser(
         $name, $middle_initial, $surname, $gender, $scholar, 
         $lrn_number, $school_id, $date_of_birth, $grade, 
-        $section, $strand, $phone_number, $email, $password
+        $section, $strand, $phone_number, $email, $password,$adviser
     ) {
-        $role = 'user'; // Set the default role
+        $role = 'user'; 
         
         // Pass parameters in the correct order
         return $this->userModel->register(
             $name, $middle_initial, $surname, $gender, $scholar, 
             $lrn_number, $school_id, $date_of_birth, $grade, 
-            $section, $strand, $phone_number, $email, $password, $role
+            $section, $strand, $phone_number, $email, $password, $adviser, $role
         );
     }
     

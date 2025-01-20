@@ -47,6 +47,21 @@ if (session_status() == PHP_SESSION_NONE) {
             </a>
           </li>
           <li>
+            <a href="./create_student.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+             Register Student
+            </a>
+          </li>
+          <li>
+            <a href="./studentList.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+             Student List
+            </a>
+          </li>
+          <li>
+            <a href="./Create_teacher.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+             Create Teacher
+            </a>
+          </li>
+          <li>
             <a href="./add_candidates.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
             voting
             </a>
@@ -77,7 +92,7 @@ if (session_status() == PHP_SESSION_NONE) {
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden lg:pl-64">
+    <div class="flex-2 flex flex-col overflow-hidden lg:pl-64">
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">

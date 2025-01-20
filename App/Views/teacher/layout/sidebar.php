@@ -10,7 +10,7 @@ Middleware::auth('teacher');
   <title>USER || side</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-neutral-900 text-white font-sans">
+<body class="bg-slate-50 text-white font-sans">
 
   <!-- Main Container -->
   <div class="flex h-screen overflow-hidden">
@@ -37,6 +37,12 @@ Middleware::auth('teacher');
           <li>
             <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Profile
+            </a>
+          </li>
+          <li>
+          <li>
+            <a href="./listStudent.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Student List
             </a>
           </li>
           <li>

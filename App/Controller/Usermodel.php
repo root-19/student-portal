@@ -19,16 +19,16 @@ class UserModel {
     public function register(
         $name, $middle_initial, $surname, $gender, $scholar, 
         $lrn_number, $school_id, $date_of_birth, $grade, 
-        $section, $strand, $phone_number, $email, $password, $role
+        $section, $strand, $phone_number, $email, $password, $adviser, $role
     ) {
         // Insert query for registering the user
         $query = "INSERT INTO " . $this->accounts . " 
             (name, middle_initial, surname, gender, scholar, lrn_number, 
              school_id, date_of_birth, grade, section, strand, 
-             phone_number, email, password, role) 
+             phone_number, email, password, adviser, role) 
             VALUES (:name, :middle_initial, :surname, :gender, :scholar, 
                     :lrn_number, :school_id, :date_of_birth, :grade, 
-                    :section, :strand, :phone_number, :email, :password, :role)";
+                    :section, :strand, :phone_number, :email, :password, :adviser, :role)";
         
         $stmt = $this->conn->prepare($query);
     
@@ -48,6 +48,7 @@ class UserModel {
         $stmt->bindParam(':phone_number', $phone_number);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $hashedPassword);
+        $stmt->bindParam(':adviser', $adviser);
         $stmt->bindParam(':role', $role);
     
         if ($stmt->execute()) {
@@ -111,35 +112,28 @@ class UserModel {
             // $mail->SMTPDebug = 2;
     
             if ($mail->send()) {
-                return true; // Email sent successfully
+                return true; 
             } else {
                 error_log("Mailer Error: {$mail->ErrorInfo}");
-                return false; // Return false if email sending fails
+                return false; 
             }
         } catch (\PHPMailer\PHPMailer\Exception $e) {
             error_log("Mailer Error: {$e->getMessage()}");
-            return false; // Return false if an exception occurs
+            return false; 
         }
     }
     
 
     public function login($school_id, $password) {
-        // Prepare SQL query to get the user by email
+
         $stmt = $this->conn->prepare("SELECT id, name, school_id, role, password FROM " . $this->accounts . " WHERE school_id = ?");
-        
-        // Bind the parameter using PDO's bindParam method
         $stmt->bindParam(1, $school_id, PDO::PARAM_STR);
-        
-        // Execute the statement
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-        // Check if a user is found
-        if ($user) {
-           
-            if (password_verify($password, $user['password'])) {
-                return $user;  
+        
+        if ($user) {   
+     if (password_verify($password, $user['password'])) {
+       return $user;  
             }
         }
         return false;  
@@ -155,16 +149,12 @@ class UserModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    // Fetch users with role and search term (optional)
     public function getUsersByRoleAndSearch($role, $searchTerm = '') {
-        $query = "SELECT school_id, name, surname, email FROM " . $this->accounts . " WHERE role = :role";
-        
-        // Add search filter if a search term is provided
+        $query = "SELECT school_id, name, surname, email, grade,scholar, section FROM " . $this->accounts . " WHERE role = :role";
         if (!empty($searchTerm)) {
-            $query .= " AND school_id LIKE :searchTerm";
+            $query .= " AND (school_id LIKE :searchTerm OR name LIKE :searchTerm OR surname LIKE :searchTerm)";
         }
-
+    
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':role', $role);
         
@@ -172,14 +162,11 @@ class UserModel {
             $searchTerm = "%" . $searchTerm . "%";
             $stmt->bindParam(':searchTerm', $searchTerm);
         }
-
-        // Execute query
+    
         $stmt->execute();
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
+    
     // Check if email exists in the users table
     // public function checkEmailExists($email) {
 
@@ -203,7 +190,7 @@ class UserModel {
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':school_id', $school_id);
 
-        return $stmt->execute();
+        return $stmt->execute();54
     }
 }
     

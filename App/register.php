@@ -53,7 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             $strand,
             $phone_number,
             $email,
-            $password
+            $password,
+            $adviser
         );
 
         if ($result === true) {

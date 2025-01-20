@@ -7,8 +7,7 @@ $database = new Database();
 $db = $database->connect();
 $candidate = new Candidate($db);
 
-// Assume a user ID is stored in the session (you may change this based on your login system)
-$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1; // Use actual logged-in user's ID
+$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1; 
 
 // Cast a vote
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
