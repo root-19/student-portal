@@ -190,8 +190,34 @@ class UserModel {
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':school_id', $school_id);
 
-        return $stmt->execute();54
+        return $stmt->execute();
     }
+
+    public function getUsersWithAdvisers() {
+        $query = "
+            SELECT 
+                u.school_id AS user_school_id, 
+                u.name AS user_name, 
+                u.surname AS user_surname, 
+                u.adviser AS adviser_name, 
+                t.school_id AS teacher_school_id, 
+                t.name AS teacher_name, 
+                t.surname AS teacher_surname,
+                u.strand AS user_strand, 
+                u.section AS user_section
+            FROM " . $this->accounts . " u
+            INNER JOIN " . $this->accounts . " t
+            ON u.adviser = t.name
+            WHERE u.role = 'user' AND t.role = 'teacher'
+            ORDER BY u.strand, u.section;
+        ";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
     
 

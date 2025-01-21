@@ -70,12 +70,7 @@ if (session_status() == PHP_SESSION_NONE) {
             <a href="./profile.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Profile
             </a>
-          </li>
-          <li>
-            <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
-              Settings
-            </a>
-          </li>
+</li>
           <li>
             <a href="./logout.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Logout

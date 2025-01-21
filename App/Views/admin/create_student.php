@@ -16,8 +16,16 @@ $auth = new Auth($userModel);
 $message = ""; 
 
 // Handle registration request
+/**
+ * Handles the registration request for a new student.
+ * This code is executed when the 'register' button is submitted in the create_student.php form.
+ * It retrieves the form inputs, validates the required fields, and calls the `registerUser` method
+ * of the `Auth` class to handle the user registration process.
+ * If the registration is successful, a success message is set in the `$message` variable.
+ * If there are any validation errors, an error message is set in the `$message` variable.
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-    // Retrieve form inputs and use null as the default if not set
+
     $name = $_POST['name'] ?? null;
     $middle_initial = $_POST['middle_initial'] ?? null;
     $surname = $_POST['surname'] ?? null;
@@ -60,9 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         if ($result === true) {
             $message = "Registration successful!";
         } else {
-            $message = $result; // Display error message returned from registerUser
-        }
+            $message = $result;
     }
+}
 }
 ?>
 <?php include "./layout/sidebar.php"; ?>
@@ -93,7 +101,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             <input type="date" name="date_of_birth" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="text" name="grade" placeholder="Grade Level" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="text" name="section" placeholder="Section" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <input type="text" name="adviser" placeholder="Adviser" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select name="adviser" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <option value="" disabled selected>Select Adviser</option>
+    <option value="adviser1">Adviser 1</option>
+    <option value="adviser2">Adviser 2</option>
+    <option value="adviser3">Adviser 3</option>
+    <option value="adviser4">Adviser 4</option>
+    <option value="adviser5">Adviser 5</option>
+    <option value="adviser6">Adviser 6</option>
+    <option value="adviser7">Adviser 7</option>
+    <option value="adviser8">Adviser 8</option>
+    <option value="adviser9">Adviser 9</option>
+    <option value="adviser10">Adviser 10</option>
+</select>
+
             <input type="text" name="strand" placeholder="Strand" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="text" name="phone_number" placeholder="Phone Number" required pattern="\d{10,15}" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="email" name="email" placeholder="Email" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">

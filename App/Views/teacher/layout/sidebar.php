@@ -46,6 +46,16 @@ Middleware::auth('teacher');
             </a>
           </li>
           <li>
+            <a href="./announcement.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Announcement
+            </a>
+          </li>
+          <li>
+            <a href="./create_quiz.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Create quiz
+            </a>
+          </li>
+          <li>
             <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Settings
             </a>
@@ -66,7 +76,7 @@ Middleware::auth('teacher');
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden lg:pl-64">
+    <div class="flex-2 flex flex-col overflow-hidden lg:pl-64">
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">
@@ -82,8 +92,8 @@ Middleware::auth('teacher');
         <h1 class="text-3xl font-bold text-orange-500 mb-4">Welcome to My App</h1>
         <p class="text-gray-700">This is the main content area. Resize the screen to see the responsive sidebar in action!</p>
       </main> -->
-    </div>
-  </div>
+    <!-- </div>
+  </div> -->
 
   <!-- JavaScript -->
   <script>
