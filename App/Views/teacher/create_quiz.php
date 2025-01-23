@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Management</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {},
-            },
-        };
-    </script>
-</head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto p-6">
+<?php include "./layout/sidebar.php";?>
+<div class="container mx-auto p-6 h-screen mr-40">
         <h1 class="text-3xl font-bold text-center mb-6">Create a Quiz</h1>
 
-        <!-- Quiz Form -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
+        <div class="bg-white p-10 rounded-lg shadow-md h-full overflow-y-auto max-w-4xl mx-auto mr-60">
             <form id="quizForm" action="../../Model/save_quiz.php" method="POST" class="space-y-4">
                 <!-- Quiz Title -->
                 <div>
