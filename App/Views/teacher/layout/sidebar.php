@@ -45,17 +45,29 @@ Middleware::auth('teacher');
             </a>
           </li>
           <li>
+<<<<<<< HEAD
             <a href="./announcement.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+=======
+            <a href="./announcement.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+>>>>>>> 2be30f9 (push)
               Announcement
             </a>
           </li>
           <li>
+<<<<<<< HEAD
             <a href="./create_quiz.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+=======
+            <a href="./create_quiz.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+>>>>>>> 2be30f9 (push)
               Create quiz
             </a>
           </li>
           <li>
+<<<<<<< HEAD
             <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+=======
+            <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+>>>>>>> 2be30f9 (push)
               Settings
             </a>
           </li>
@@ -69,7 +81,7 @@ Middleware::auth('teacher');
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden lg:pl-64">
+    <div class="flex-2 flex flex-col overflow-hidden lg:pl-64">
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">
@@ -81,8 +93,18 @@ Middleware::auth('teacher');
       </header>
     
 
+<<<<<<< HEAD
   <!-- Background Overlay -->
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden z-30"></div>
+=======
+      <!-- Content Area -->
+      <!-- <main class="p-6">
+        <h1 class="text-3xl font-bold text-orange-500 mb-4">Welcome to My App</h1>
+        <p class="text-gray-700">This is the main content area. Resize the screen to see the responsive sidebar in action!</p>
+      </main> -->
+    <!-- </div>
+  </div> -->
+>>>>>>> 2be30f9 (push)
 
   <!-- JavaScript -->
   <script>
