@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Call</title>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-white">
+    <div class="min-h-screen flex flex-col justify-center items-center">
+        <!-- Title -->
+        <h1 class="text-4xl font-semibold text-blue-500 mb-8">Delta Meet</h1>
+
+        <!-- Notification -->
+        <p id="notification" class="hidden p-4 mb-4 bg-blue-500 rounded-lg shadow-lg"></p>
+
+        <!-- Entry Modal -->
+        <div class="entry-modal bg-slate-800 p-6 rounded-lg shadow-lg" id="entry-modal">
+            <p class="text-xl text-center text-white mb-4">Create or Join Meeting</p>
+            <input id="room-input" class="room-input bg-slate-700 text-white px-4 py-2 rounded-md mb-4" placeholder="Enter Room ID" type="text">
+            <div class="flex justify-center space-x-4">
+                <button onclick="createRoom()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Create Room</button>
+                <button onclick="joinRoom()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Join Room</button>
+            </div>
+        </div>
+
+        <!-- Meet Area -->
+        <div class="meet-area mt-8 space-y-6">
+            <!-- Remote Audio Element -->
+            <audio id="remote-audio" class="w-full rounded-lg" controls></audio>
+
+            <!-- Local Audio Element -->
+            <audio id="local-audio" class="w-full rounded-lg" controls muted></audio>
+
+            <!-- Meet Controls Bar -->
+            <div class="meet-controls-bar flex justify-center space-x-4">
+                <button onclick="startScreenShare()" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Screen Share</button>
+                <button id="leave-btn" onclick="leaveRoom()" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition">Leave Room</button>
+                <button id="toggle-camera-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Camera</button>
+                <button id="toggle-microphone-btn" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Microphone</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+    <script> 
+        const PRE = "DELTA";
+const SUF = "MEET";
+var room_id;
+var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+var local_stream;
+var peer = null;
+var currentPeer = null;
+var screenSharing = false;
+
+function createRoom() {
+    console.log("Creating Room");
+    let room = document.getElementById("room-input").value;
+    if (room == " " || room == "") {
+        alert("Please enter room number");
+        return;
+    }
+    room_id = PRE + room + SUF;
+    peer = new Peer(room_id);
+    peer.on('open', (id) => {
+        console.log("Peer Connected with ID: ", id);
+        hideModal();
+        getUserMedia({ audio: true }, (stream) => {  // Only audio
+            local_stream = stream;
+            setLocalStream(local_stream);
+        }, (err) => {
+            console.log(err);
+        });
+        notify("Waiting for peer to join.");
+    });
+    peer.on('call', (call) => {
+        call.answer(local_stream);
+        call.on('stream', (stream) => {
+            setRemoteStream(stream);
+        });
+        currentPeer = call;
+    });
+}
+
+function setLocalStream(stream) {
+    let audio = document.getElementById("local-audio");
+    audio.srcObject = stream;
+    audio.play();
+}
+
+function setRemoteStream(stream) {
+    let audio = document.getElementById("remote-audio");
+    audio.srcObject = stream;
+    audio.play();
+}
+
+function hideModal() {
+    document.getElementById("entry-modal").hidden = true;
+}
+
+function notify(msg) {
+    let notification = document.getElementById("notification");
+    notification.innerHTML = msg;
+    notification.hidden = false;
+    setTimeout(() => {
+        notification.hidden = true;
+    }, 3000);
+}
+
+function joinRoom() {
+    console.log("Joining Room");
+    let room = document.getElementById("room-input").value;
+    if (room == " " || room == "") {
+        alert("Please enter room number");
+        return;
+    }
+    room_id = PRE + room + SUF;
+    hideModal();
+    peer = new Peer();
+    peer.on('open', (id) => {
+        console.log("Connected with Id: " + id);
+        getUserMedia({ audio: true }, (stream) => {  // Only audio
+            local_stream = stream;
+            setLocalStream(local_stream);
+            notify("Joining peer");
+            let call = peer.call(room_id, stream);
+            call.on('stream', (stream) => {
+                setRemoteStream(stream);
+            });
+            currentPeer = call;
+        }, (err) => {
+            console.log(err);
+        });
+    });
+}
+
+function startScreenShare() {
+    if (screenSharing) {
+        stopScreenSharing();
+    }
+    navigator.mediaDevices.getDisplayMedia({ video: true }).then((stream) => {
+        // Handle screen sharing here
+    });
+}
+
+function stopScreenSharing() {
+    if (!screenSharing) return;
+    // Handle stop screen sharing logic
+}
+
+    </script>
+</body>
+</html>

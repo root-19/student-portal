@@ -45,29 +45,27 @@ Middleware::auth('teacher');
             </a>
           </li>
           <li>
-<<<<<<< HEAD
+
             <a href="./announcement.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
-=======
-            <a href="./announcement.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
->>>>>>> 2be30f9 (push)
               Announcement
             </a>
           </li>
           <li>
-<<<<<<< HEAD
+
             <a href="./create_quiz.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
-=======
-            <a href="./create_quiz.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
->>>>>>> 2be30f9 (push)
               Create quiz
             </a>
           </li>
           <li>
-<<<<<<< HEAD
+
+            <a href="./users_score.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Users score
+            </a>
+          </li>
+          <li>
+
             <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
-=======
-            <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
->>>>>>> 2be30f9 (push)
+
               Settings
             </a>
           </li>
@@ -93,10 +91,10 @@ Middleware::auth('teacher');
       </header>
     
 
-<<<<<<< HEAD
+
   <!-- Background Overlay -->
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden z-30"></div>
-=======
+
       <!-- Content Area -->
       <!-- <main class="p-6">
         <h1 class="text-3xl font-bold text-orange-500 mb-4">Welcome to My App</h1>
@@ -104,7 +102,7 @@ Middleware::auth('teacher');
       </main> -->
     <!-- </div>
   </div> -->
->>>>>>> 2be30f9 (push)
+
 
   <!-- JavaScript -->
   <script>
@@ -128,5 +126,4 @@ Middleware::auth('teacher');
       overlay.classList.add('hidden');
     });
   </script>
-</body>
-</html>
+

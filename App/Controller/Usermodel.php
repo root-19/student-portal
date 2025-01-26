@@ -217,8 +217,21 @@ class UserModel {
     
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+    public function getUserById($userId) {
+        $query = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getUsersById($userId) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute([':id' => $userId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
+
     
 
 ?>

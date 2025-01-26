@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <?php include "./layout/sidebar.php";?>
 <div class="container mx-auto p-6 h-screen mr-40">
         <h1 class="text-3xl font-bold text-center mb-6">Create a Quiz</h1>
