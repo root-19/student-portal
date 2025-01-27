@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email,
         $password,
         $adviser,
+        $semester,
         $role
     );
 

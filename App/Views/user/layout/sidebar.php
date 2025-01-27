@@ -30,7 +30,7 @@ if (session_status() == PHP_SESSION_NONE) {
         </div>
 
         <!-- Menu -->
-        <ul class="flex-grow p-4 space-y-4">
+        <ul class="flex-grow p-4 space-y-2">
           <li>
             <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Dashboard
@@ -62,6 +62,12 @@ if (session_status() == PHP_SESSION_NONE) {
             </a>
           </li>
           <li>
+
+            <a href="./subject.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Subject
+            </a>
+          </li>
+          <li>
             <a href="./vote.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
             Vote events
             </a>
@@ -71,6 +77,12 @@ if (session_status() == PHP_SESSION_NONE) {
            Quiz
             </a>
           </li>
+          <li>
+            <a href="./grading.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+            Grading Card
+            </a>
+          </li>
+          
           <li>
             <a href="./logout.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Logout
@@ -87,7 +99,7 @@ if (session_status() == PHP_SESSION_NONE) {
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden lg:pl-64">
+    <div class="flex-2 flex flex-col overflow-hidden lg:pl-64">
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">

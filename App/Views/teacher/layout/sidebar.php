@@ -56,6 +56,7 @@ Middleware::auth('teacher');
               Create quiz
             </a>
           </li>
+          
           <li>
 
             <a href="./users_score.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
@@ -64,9 +65,15 @@ Middleware::auth('teacher');
           </li>
           <li>
 
-            <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+            <a href="./grading.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
 
-              Settings
+              Grading
+            </a>
+          </li>
+          <li>
+          <a href="./ai.php" class="block px-4 py-2 rounded-md hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+
+              chatbot
             </a>
           </li>
           <li>

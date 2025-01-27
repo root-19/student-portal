@@ -14,7 +14,7 @@ class Auth {
     public function registerUser(
         $name, $middle_initial, $surname, $gender, $scholar, 
         $lrn_number, $school_id, $date_of_birth, $grade, 
-        $section, $strand, $phone_number, $email, $password,$adviser
+        $section, $strand, $phone_number, $email, $password,$adviser, $semester,
     ) {
         $role = 'user'; 
         
@@ -22,7 +22,7 @@ class Auth {
         return $this->userModel->register(
             $name, $middle_initial, $surname, $gender, $scholar, 
             $lrn_number, $school_id, $date_of_birth, $grade, 
-            $section, $strand, $phone_number, $email, $password, $adviser, $role
+            $section, $strand, $phone_number, $email, $password, $adviser,$semester, $role
         );
     }
     
