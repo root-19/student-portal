@@ -369,9 +369,32 @@ class UserModel {
     //     $stmt->bindParam(':grade', $grade);
     //     return $stmt->execute();
     // }
-    
-}
 
+     // Fetch user details with grades
+     public function getUserGrades($user_id) {
+        $query = "SELECT users.id, users.surname, users.grade AS user_grade, users.semester, user_grades.grade AS grade_from_user_grades
+                  FROM users 
+                  JOIN user_grades ON users.id = user_grades.user_id
+                  WHERE users.id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+    public function getUserDetails($user_id) {
+        $query = "SELECT surname, grade, semester FROM users WHERE id = :user_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
+    
+
+}
 
 ?>
