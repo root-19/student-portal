@@ -37,6 +37,11 @@ if (session_status() == PHP_SESSION_NONE) {
             </a>
           </li>
           <li>
+            <a href="./enrolliest.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+              Enrollies
+            </a>
+          </li>
+          <li>
             <a href="./announcement.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Announcement
             </a>
