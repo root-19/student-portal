@@ -384,7 +384,7 @@ class UserModel {
         return $stmt;
     }
     public function getUserDetails($user_id) {
-        $query = "SELECT surname, name,school_id, grade, semester FROM users WHERE id = :user_id";
+        $query = "SELECT surname, grade, semester FROM users WHERE id = :user_id";
         
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $user_id);
