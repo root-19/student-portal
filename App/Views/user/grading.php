@@ -22,32 +22,37 @@ $hasGradeBelow75 = false;
 $averageGrade = 0;
 
 $userDetails = $stmt->fetch(PDO::FETCH_ASSOC);
-$name = $userDetails['name'];
-$surname = $userDetails['surname'];
-$scholar = (int) $userDetails['scholar'];  // Convert to integer
-$school_id = $userDetails['school_id'];
-$fee = ($scholar === 1) ? 0 : 7000;  // Ensure correct fee
 
-try {
-    $query = "INSERT INTO enrollments (user_id, name, surname, fee, scholar_status, school_id, enrollment_status)
-              VALUES (:user_id, :name, :surname, :fee, :scholar_status, :school_id, 'pending')";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':user_id', $user_id);
-    $stmt->bindParam(':name', $name);
-    $stmt->bindParam(':surname', $surname);
-    $stmt->bindParam(':fee', $fee);
-    $stmt->bindParam(':scholar_status', $scholar, PDO::PARAM_INT); // Ensure integer
-    $stmt->bindParam(':school_id', $school_id);
-    $stmt->execute();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
+    if ($userDetails) {
+        $name = $userDetails['name'];
+        $surname = $userDetails['surname'];
+        $scholar = (int) $userDetails['scholar']; // Ensure integer value
+        $school_id = $userDetails['school_id'];
+        $fee = ($scholar === 1) ? 0 : 7000; // Determine fee
 
-    if (!$scholar) {
-        header("Location: ../../../../Model/paymongo.php?user_id=$user_id&fee=$fee");
-        exit;
-    } else {
-        echo "<p class='text-green-500'>You are a scholar. Enrollment request submitted for approval.</p>";
+        try {
+            $query = "INSERT INTO enrollments (user_id, name, surname, fee, scholar_status, school_id, enrollment_status)
+                      VALUES (:user_id, :name, :surname, :fee, :scholar_status, :school_id, 'pending')";
+            $stmt = $db->prepare($query);
+            $stmt->bindParam(':user_id', $user_id);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':surname', $surname);
+            $stmt->bindParam(':fee', $fee);
+            $stmt->bindParam(':scholar_status', $scholar, PDO::PARAM_INT);
+            $stmt->bindParam(':school_id', $school_id);
+            $stmt->execute();
+
+            if (!$scholar) {
+                header("Location: ../../../../Model/paymongo.php?user_id=$user_id&fee=$fee");
+                exit;
+            } else {
+                echo "<p class='text-green-500'>You are a scholar. Enrollment request submitted for approval.</p>";
+            }
+        } catch (Exception $e) {
+            echo "<p class='text-red-500'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
+        }
     }
-} catch (Exception $e) {
-    echo "<p class='text-red-500'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
 
