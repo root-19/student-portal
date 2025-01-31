@@ -22,13 +22,13 @@ if ($fee <= 0) {
 }
 
 // PayMongo API Configuration
-$paymongo_api_key = $_ENV['PAYMONGO_API_KEY']; // ✅ Get API key from .env
+$paymongo_api_key = $_ENV['PAYMONGO_API_KEY']; 
 
 $api_url = 'https://api.paymongo.com/v1/links';
 $data = [
     'data' => [
         'attributes' => [
-            'amount' => $fee * 100, 
+            'amount' => $fee * 100, //conert to cent
             'currency' => 'PHP',
             'description' => "Enrollment Fee for User ID $user_id",
             'redirect' => [

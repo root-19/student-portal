@@ -6,7 +6,7 @@
         <div class="bg-white p-10 rounded-lg shadow-md h-full overflow-y-auto max-w-4xl mx-auto mr-60">
             <form id="quizForm" action="../../Model/save_quiz.php" method="POST" class="space-y-4">
                 <!-- Quiz Title -->
-                <div>
+                <div class="text-black">
                     <label for="quizTitle" class="block text-lg font-medium text-gray-700">Quiz Title</label>
                     <input 
                         type="text" 
@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- Questions Section -->
-                <div id="questionsContainer" class="space-y-4">
+                <div id="questionsContainer" class="space-y-4 text-black">
                     <div class="questionItem">
                         <label class="block text-lg font-medium text-gray-700">Question 1</label>
                         <input 

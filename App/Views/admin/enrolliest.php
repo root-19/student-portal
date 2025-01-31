@@ -47,7 +47,7 @@ $stmt->execute();
                             <form method="POST" action="update_enrollment.php">
                                 <input type="hidden" name="enrollment_id" value="<?= htmlspecialchars($row['id']) ?>">
                                 <button type="submit" name="approve" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Approve</button>
-                                <button type="submit" name="reject" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Reject</button>
+                                <!-- <button type="submit" name="reject" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Reject</button> -->
                             </form>
                         <?php endif; ?>
                     </td>
