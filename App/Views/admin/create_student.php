@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $phone_number = $_POST['phone_number'] ?? null;
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
+    $semester = $_POST['semester'] ?? null;
     $adviser = $_POST['adviser'] ?? null;
 
     // Validate required fields

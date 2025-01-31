@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone_number = $_POST['phone_number'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
+    $semester = $_POST['semester'] ?? '';
     $adviser = $_POST['adviser'] ?? '';
 
     // Role is automatically set to "teacher"

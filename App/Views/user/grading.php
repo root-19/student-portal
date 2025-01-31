@@ -15,45 +15,40 @@ $userModel = new UserModel($db);
 
 $user_id = $_SESSION['user_id'];
 $stmt = $userModel->getUserGrades($user_id);
+
 $totalGrades = 0;
 $gradeCount = 0;
 $hasGradeBelow75 = false;
+$averageGrade = 0;
 
 $userDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+$name = $userDetails['name'];
+$surname = $userDetails['surname'];
+$scholar = (int) $userDetails['scholar'];  // Convert to integer
+$school_id = $userDetails['school_id'];
+$fee = ($scholar === 1) ? 0 : 7000;  // Ensure correct fee
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
-    if ($userDetails) {
-        $name = $userDetails['name'];
-        $surname = $userDetails['surname'];
-        $scholar = (bool) $userDetails['scholar'];
-        $school_id = $userDetails['school_id'];
-        $fee = $scholar ? 0 : 7000;
+try {
+    $query = "INSERT INTO enrollments (user_id, name, surname, fee, scholar_status, school_id, enrollment_status)
+              VALUES (:user_id, :name, :surname, :fee, :scholar_status, :school_id, 'pending')";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':surname', $surname);
+    $stmt->bindParam(':fee', $fee);
+    $stmt->bindParam(':scholar_status', $scholar, PDO::PARAM_INT); // Ensure integer
+    $stmt->bindParam(':school_id', $school_id);
+    $stmt->execute();
 
-        try {
-            // Insert enrollment record
-            $query = "INSERT INTO enrollments (user_id, name, surname, fee, scholar_status, school_id, enrollment_status)
-                      VALUES (:user_id, :name, :surname, :fee, :scholar_status, :school_id, 'pending')";
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(':user_id', $user_id);
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':surname', $surname);
-            $stmt->bindParam(':fee', $fee);
-            $stmt->bindParam(':scholar_status', $scholar, PDO::PARAM_BOOL);
-            $stmt->bindParam(':school_id', $school_id);
-            $stmt->execute();
-
-            if (!$scholar) {
-                header("Location: ../../../../Model/paymongo.php?user_id=$user_id&fee=$fee");
-                exit;
-            } else {
-                echo "<p class='text-green-500'>You are a scholar. Enrollment request submitted for approval.</p>";
-            }
-        } catch (Exception $e) {
-            echo "<p class='text-red-500'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
-        }
+    if (!$scholar) {
+        header("Location: ../../../../Model/paymongo.php?user_id=$user_id&fee=$fee");
+        exit;
+    } else {
+        echo "<p class='text-green-500'>You are a scholar. Enrollment request submitted for approval.</p>";
     }
+} catch (Exception $e) {
+    echo "<p class='text-red-500'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
-
 ?>
 
 <?php include_once "./layout/sidebar.php"; ?>
@@ -110,12 +105,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
         <?php $isEnrollDisabled = $hasGradeBelow75 || $averageGrade < 75 || $isGrade12SecondSemester; ?>
 
         <div class="mt-6">
-            <form method="POST" action="">
-                <button type="submit" name="enroll" class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 <?= $isEnrollDisabled ? 'opacity-50 cursor-not-allowed' : '' ?>" <?= $isEnrollDisabled ? 'disabled' : '' ?>>
+            <form method="POST" action=" ">
+                <button type="submit" name="enroll" 
+                    class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 <?= $isEnrollDisabled ? 'opacity-50 cursor-not-allowed' : '' ?>" 
+                    <?= $isEnrollDisabled ? 'disabled' : '' ?>>
                     Enroll Now
                 </button>
             </form>
         </div>
+
+        <!-- Debugging JavaScript -->
+        <script>
+            document.querySelector("form").addEventListener("submit", function() {
+                console.log("Form is submitting...");
+            });
+
+            document.querySelector("button[name='enroll']").addEventListener("click", function() {
+                console.log("Enroll button clicked.");
+            });
+        </script>
 
     <?php else: ?>
         <p class="text-red-500">No grades found for this user.</p>

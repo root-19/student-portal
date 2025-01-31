@@ -16,21 +16,26 @@ class UserModel {
     }
   
    
-
     public function register(
         $name, $middle_initial, $surname, $gender, $scholar, 
         $lrn_number, $school_id, $date_of_birth, $grade, 
-        $section, $strand, $phone_number, $email, $password, $adviser,$semester, $role
+        $section, $strand, $phone_number, $email, $password, $adviser, $semester, $role
     ) {
+        // Validate email before proceeding
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false; // Invalid email, return false to prevent errors
+        }
+    
         // Insert query for registering the user
         $query = "INSERT INTO " . $this->accounts . " 
-            (name, middle_initial, surname, gender, scholar, lrn_number, 
-             school_id, date_of_birth, grade, section, strand, 
-             phone_number, email, password, adviser, role) 
-            VALUES (:name, :middle_initial, :surname, :gender, :scholar, 
-                    :lrn_number, :school_id, :date_of_birth, :grade, 
-                    :section, :strand, :phone_number, :email, :password, :adviser,:semester, :role)";
-        
+        (name, middle_initial, surname, gender, scholar, lrn_number, 
+         school_id, date_of_birth, grade, section, strand, 
+         phone_number, email, password, adviser, semester, role) 
+        VALUES (:name, :middle_initial, :surname, :gender, :scholar, 
+                :lrn_number, :school_id, :date_of_birth, :grade, 
+                :section, :strand, :phone_number, :email, :password, 
+                :adviser, :semester, :role)";
+    
         $stmt = $this->conn->prepare($query);
     
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -54,16 +59,17 @@ class UserModel {
         $stmt->bindParam(':role', $role);
     
         if ($stmt->execute()) {
-            // Once registration is successful, send email with credentials
-            $emailSent = $this->sendEmailNotification($email, $school_id, $password);
+            // Once registration is successful, send email notification only to the registered user
+            if (!empty($email)) {
+                $emailSent = $this->sendEmailNotification($email, $school_id, $password);
     
-            // If email is successfully sent, return true, otherwise return false
-            if ($emailSent) {
-                return true; // Registration and email sending successful
-            } else {
-                // If email sending fails, delete the user and return false
-                $this->deleteUserByEmail($email);
-                return false; // Registration successful, but email sending failed
+                if ($emailSent) {
+                    return true; // Registration and email sending successful
+                } else {
+                    // If email sending fails, delete the user and return false
+                    $this->deleteUserByEmail($email);
+                    return false; // Registration successful, but email sending failed
+                }
             }
         }
         
@@ -372,7 +378,7 @@ class UserModel {
 
      // Fetch user details with grades
      public function getUserGrades($user_id) {
-        $query = "SELECT users.id, users.surname, users.grade AS user_grade, users.semester, user_grades.grade AS grade_from_user_grades
+        $query = "SELECT users.id, users.name, users.surname, users.grade AS user_grade, users.semester, users.scholar, users.school_id, user_grades.grade AS grade_from_user_grades
                   FROM users 
                   JOIN user_grades ON users.id = user_grades.user_id
                   WHERE users.id = :user_id";
@@ -383,6 +389,7 @@ class UserModel {
         
         return $stmt;
     }
+    
     public function getUserDetails($user_id) {
         $query = "SELECT surname, grade, semester FROM users WHERE id = :user_id";
         

@@ -28,7 +28,7 @@ $candidates = $candidate->getCandidates();
 ?>
 <?php include "./layout/sidebar.php"; ?>
 
-<div class="container mx-auto">
+<div class="container mx-auto text-black">
     <h1 class="text-3xl font-bold text-center mb-6">Candidates</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[500px] overflow-y-auto">
         <?php foreach ($candidates as $candidate): ?>
