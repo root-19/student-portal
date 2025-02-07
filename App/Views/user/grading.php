@@ -27,30 +27,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
     if ($userDetails) {
         $name = $userDetails['name'];
         $surname = $userDetails['surname'];
-        $scholar = (int) $userDetails['scholar']; // Ensure integer value
+        $scholar =  $userDetails['scholar']; // Ensure integer value
         $school_id = $userDetails['school_id'];
-        $fee = ($scholar === 1) ? 0 : 7000; // Determine fee
+        $fee = ($scholar === 'scholar') ? 0 : 7000; // Determine fee
 
         try {
-            $query = "INSERT INTO enrollments (user_id, name, surname, fee, scholar_status, school_id, enrollment_status)
-                      VALUES (:user_id, :name, :surname, :fee, :scholar_status, :school_id, 'pending')";
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(':user_id', $user_id);
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':surname', $surname);
-            $stmt->bindParam(':fee', $fee);
-            $stmt->bindParam(':scholar_status', $scholar, PDO::PARAM_INT);
-            $stmt->bindParam(':school_id', $school_id);
-            $stmt->execute();
+            $query = "INSERT INTO enrollments 
+                        (user_id, name, surname, fee, scholar_status, school_id, enrollment_status)
+                      VALUES 
+                        (:user_id, :name, :surname, :fee, :scholar_status, :school_id, 'pending')";
+            $stmtInsert = $db->prepare($query);
+            $stmtInsert->bindParam(':user_id', $user_id);
+            $stmtInsert->bindParam(':name', $name);
+            $stmtInsert->bindParam(':surname', $surname);
+            $stmtInsert->bindParam(':fee', $fee);
+            $stmtInsert->bindParam(':scholar_status', $scholar);
+            $stmtInsert->bindParam(':school_id', $school_id);
+            $stmtInsert->execute();
 
-            if (!$scholar) {
+            // If the user is required to pay (i.e., scholar status is 'paid')
+            if ($scholar === 'pay') {
                 header("Location: ../../../../Model/paymongo.php?user_id=$user_id&fee=$fee");
                 exit;
             } else {
-                echo "<p class='text-green-500'>You are a scholar. Enrollment request submitted for approval.</p>";
+                // Output a complete HTML document with SweetAlert for scholar users
+                ?>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Enrollment Submitted</title>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Enrollment Submitted',
+                            text: 'You are a scholar. Your enrollment request has been submitted for approval.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = 'grading.php';
+                        });
+                    </script>
+                </body>
+                </html>
+                <?php
+                exit;
             }
         } catch (Exception $e) {
-            echo "<p class='text-red-500'>An error occurred: " . htmlspecialchars($e->getMessage()) . "</p>";
+            // Output error message via SweetAlert
+            ?>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Error</title>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            </head>
+            <body>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred: <?php echo htmlspecialchars($e->getMessage(), ENT_QUOTES, "UTF-8"); ?>'
+                    }).then(() => {
+                        window.location.href = 'index.php';
+                    });
+                </script>
+            </body>
+            </html>
+            <?php
+            exit;
         }
     }
 }
@@ -110,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
         <?php $isEnrollDisabled = $hasGradeBelow75 || $averageGrade < 75 || $isGrade12SecondSemester; ?>
 
         <div class="mt-6">
-            <form method="POST" action=" ">
+            <form method="POST" action="">
                 <button type="submit" name="enroll" 
                     class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 <?= $isEnrollDisabled ? 'opacity-50 cursor-not-allowed' : '' ?>" 
                     <?= $isEnrollDisabled ? 'disabled' : '' ?>>

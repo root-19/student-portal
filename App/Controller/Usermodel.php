@@ -19,9 +19,10 @@ class UserModel {
     public function register(
         $name, $middle_initial, $surname, $gender, $scholar, 
         $lrn_number, $school_id, $date_of_birth, $grade, 
-        $section, $strand, $phone_number, $email, $password, $adviser, $semester, $role
+        $section, $strand, $phone_number, $email, $password, 
+        $adviser, $semester, $role
     ) {
-        // Validate email before proceeding
+        // Validate email before proceeding (optional, if you still need email validation)
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return false; // Invalid email, return false to prevent errors
         }
@@ -59,78 +60,61 @@ class UserModel {
         $stmt->bindParam(':role', $role);
     
         if ($stmt->execute()) {
-            // Once registration is successful, send email notification only to the registered user
-            if (!empty($email)) {
-                $emailSent = $this->sendEmailNotification($email, $school_id, $password);
+            // Once registration is successful, send SMS notification to the registered user
+            if (!empty($phone_number)) {
+                $smsSent = $this->sendSMSNotification($phone_number, $school_id, $password);
     
-                if ($emailSent) {
-                    return true; // Registration and email sending successful
+                if ($smsSent) {
+                    return true; // Registration and SMS sending successful
                 } else {
-                    // If email sending fails, delete the user and return false
-                    $this->deleteUserByEmail($email);
-                    return false; // Registration successful, but email sending failed
+                    // If SMS sending fails, delete the user and return false
+                    $this->deleteUserByPhone($phone_number);
+                    return false; 
                 }
             }
         }
         
-        return false; // Registration failed
+        return false; 
     }
     
-    // Method to delete user if email is not sent
-    private function deleteUserByEmail($email) {
-        $query = "DELETE FROM " . $this->accounts . " WHERE email = :email";
+    // Method to delete user if SMS is not sent
+    private function deleteUserByPhone($phone_number) {
+        $query = "DELETE FROM " . $this->accounts . " WHERE phone_number = :phone_number";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':phone_number', $phone_number);
         $stmt->execute();
     }
     
-    // Email Notification Method
-    public function sendEmailNotification($email, $school_id, $password) {
-        $mail = new \PHPMailer\PHPMailer\PHPMailer();
-        try {
-            // Server settings
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; 
-            $mail->SMTPAuth = true;
-            $mail->Username = 'hperformanceexhaust@gmail.com';
-            $mail->Password = 'wolv wvyy chhl rvvm';  
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port = 587;
+    // SMS Notification Method using SMS API
+    public function sendSMSNotification($phone_number, $school_id, $password) {
+        $url = 'https://sms.iprogtech.com/api/v1/sms_messages';
+        $message = "Welcome! Your School ID is {$school_id} and your password is {$password}. Please keep this information secure.";
+        
+        $data = [
+            'api_token'    => '',
+            'message'      => $message,
+          
+        ];
+        
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded'
+        ]);
+        $response = curl_exec($ch);
+        $curlError = curl_error($ch);
+        curl_close($ch);
     
-            // Recipients
-            $mail->setFrom('hperformanceexhaust@gmail.com', 'GIST');
-            $mail->addAddress($email);
-    
-            // Content
-            $mail->isHTML(true);
-            $mail->Subject = 'Your Registration Details';
-            $mail->Body = "
-                <h1>Welcome to Your School</h1>
-                <p>Dear Student,</p>
-                <p>Thank you for registering! Here are your credentials:</p>
-                <ul>
-                    <li><strong>School ID:</strong> {$school_id}</li>
-                    <li><strong>Password:</strong> {$password}</li>
-                </ul>
-                <p>Please keep this information safe and do not share it with anyone.</p>
-                <p>Best regards,<br>Your School Team</p>
-            ";
-    
-            // Debugging (optional)
-            // $mail->SMTPDebug = 2;
-    
-            if ($mail->send()) {
-                return true; 
-            } else {
-                error_log("Mailer Error: {$mail->ErrorInfo}");
-                return false; 
-            }
-        } catch (\PHPMailer\PHPMailer\Exception $e) {
-            error_log("Mailer Error: {$e->getMessage()}");
+        if ($response && !$curlError) {
+          
+            return true; 
+        } else {
+            error_log("SMS API Error: " . $curlError);
             return false; 
         }
     }
-    
 
     public function login($school_id, $password) {
 
