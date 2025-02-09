@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
         <div class="pt-6 text-center">
-            <button type="submit" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg shadow-lg transition duration-200">
+            <button type="submit" class="w-full md:w-auto bg-green-800 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg shadow-lg transition duration-200">
                 Register Teacher
             </button>
         </div>

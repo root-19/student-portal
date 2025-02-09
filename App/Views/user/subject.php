@@ -34,10 +34,21 @@ if ($userId) {
 ?><?php include './layout/sidebar.php'; ?>
 
 <!-- <div class="flex min-h-screen mr-60 "> -->
-   
+<style>
+/* Hide scrollbar but keep scrolling functionality */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+}
+</style>
+
 
     <!-- Main Content -->
-    <div class="flex-2  p-20 overflow-auto  max-h-screen  ">
+    <div class="flex-2  p-20 max-h-screen overflow-y-auto max-h-[80vh] scrollbar-hide  ">
     <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
     <h1 class="text-2xl font-bold text-center text-gray-800">Your Subjects for All Semesters</h1>
 
@@ -51,7 +62,7 @@ if ($userId) {
                 <h2 class="text-xl font-semibold text-gray-700 border-b pb-2"><?= htmlspecialchars($semester); ?></h2>
                 <div class="space-y-2 mt-4">
                     <?php foreach ($semesterSubjects as $subject): ?>
-                        <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg border-l-4 border-green-500">
                             <p class="text-lg text-gray-800"><?= htmlspecialchars($subject); ?></p>
                         </div>
                     <?php endforeach; ?>

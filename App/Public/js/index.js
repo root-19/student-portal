@@ -10,37 +10,62 @@ closeMobileMenu.addEventListener("click", function() {
     mobileMenu.classList.add("hidden");
 });
 
+// Function to handle text-to-speech
+function speakText(text) {
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US"; // Set the language
+    speech.rate = 1; // Adjust the speed
+    speech.pitch = 1; // Adjust the pitch
+    window.speechSynthesis.speak(speech);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     introJs().setOptions({
         steps: [
             { 
                 element: document.querySelector("#header"),
-                intro: "Welcome to the Student Portal header section. This is where you navigate through the site." 
+                intro: "Welcome to the Student Portal header section. This is where you navigate through the site.",
+                position: "bottom"
             },
             { 
                 element: document.querySelector("#home"),
-                intro: "This is the homepage. You can explore your courses, grades, and other features here." 
+                intro: "This is the homepage. You can explore your courses, grades, and other features here.",
+                position: "top"
             },
             { 
                 element: document.querySelector("#login"),
-                intro: "Click here to log in to your account and access the portal."
+                intro: "Click here to log in to your account and access the portal.",
+                position: "right"
             },
             { 
                 element: document.querySelector("#about"),
-                intro: "Learn more about the features and services of our portal."
+                intro: "Learn more about the features and services of our portal.",
+                position: "left"
             },
             { 
                 element: document.querySelector("#contact"),
-                intro: "Get in touch with us through this section."
+                intro: "Get in touch with us through this section.",
+                position: "top"
             },
             { 
                 element: document.querySelector("#features"),
-                intro: "Explore the features of the portal, such as grade tracking and notifications."
+                intro: "Explore the features of the portal, such as grade tracking and notifications.",
+                position: "bottom"
             },
             { 
                 element: document.querySelector("#courses"),
-                intro: "Check out available courses you can take through the portal."
+                intro: "Check out available courses you can take through the portal.",
+                position: "top"
             }
         ]
+    }).onbeforechange(function(targetElement) {
+        // Speak the intro text when a step is activated
+        speakText(this._options.steps[this._currentStep].intro);
     }).start();
 });
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(error => console.log("Service Worker Failed", error));
+  }

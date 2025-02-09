@@ -35,7 +35,7 @@ if (!$modules) {
                 <h3 class="text-xl font-bold text-gray-800 mb-4"><?= htmlspecialchars($module['title']); ?></h3>
                 <form action="view_module.php" method="GET">
                     <input type="hidden" name="id" value="<?= htmlspecialchars($module['id']); ?>">
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                    <button type="submit" class="bg-green-800 text-white px-4 py-2 rounded-md hover:bg-green-600">
                         View Images
                     </button>
                 </form>

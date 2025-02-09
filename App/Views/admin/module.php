@@ -20,7 +20,7 @@ $modules = $module->getModules();
     <form action="../../Model/uplaod.php" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto">
         <div class="mb-4">
             <label for="title" class="block text-gray-700 font-bold mb-2">Module Title:</label>
-            <input type="text" id="title" name="title" class="w-full px-4 py-2 border rounded-md focus:outline-none" required>
+            <input type="text" id="title" name="title" class="w-full px-4 py-2 border text-black rounded-md focus:outline-none" required>
         </div>
 
         <div class="mb-4">
@@ -28,7 +28,7 @@ $modules = $module->getModules();
             <input type="file" id="images" name="images[]" class="w-full border rounded-md focus:outline-none" multiple accept="image/*" required>
         </div>
 
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+        <button type="submit" class="bg-green-800 text-white px-4 py-2 rounded-md hover:bg-green-600">
             Submit
         </button>
     </form>

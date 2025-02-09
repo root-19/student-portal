@@ -59,10 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             <!-- Login Form -->
             <form method="POST" class="space-y-4 bg-opacity-80">
             <div>
-                    <input type="text" name="school_id" placeholder="School ID" required class="w-full p-3 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" name="school_id" placeholder="School ID" required class="w-full p-3 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
                 <div>
-                    <input type="password" name="password" placeholder="Password" required class="w-full p-3 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="password" name="password" placeholder="Password" required class="w-full p-3 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
                 <button type="submit" name="login" class="w-full p-3 bg-orange-600 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" >Login</button>
             </form>
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             </div>
 
             <!-- Register Link -->
-            <p class="mt-4 text-center text-gray-600">Don't have an account? <a href="../register.php" style="color: var(--yellow)" class="hover:underline">Register here</a></p>
+            <!-- <p class="mt-4 text-center text-gray-600">Don't have an account? <a href="../register.php" style="color: var(--yellow)" class="hover:underline">Register here</a></p> -->
         </div>
     </div>
 </body>

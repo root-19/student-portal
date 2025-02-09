@@ -29,11 +29,11 @@ $images = json_decode($moduleData['images']);
 </head>
 <body class="bg-gray-100">
     <!-- Header with Back Button -->
-    <header class="bg-blue-600 text-white py-4 shadow-md">
+    <header class="bg-green-800 text-white py-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <button 
                 onclick="history.back()" 
-                class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-md font-bold">
+                class="text-white bg-green-800 hover:bg-green-700 px-4 py-2 rounded-md font-bold">
                 ← Back
             </button>
             <h1 class="text-xl font-bold">View Module: <?= htmlspecialchars($moduleData['title']); ?></h1>

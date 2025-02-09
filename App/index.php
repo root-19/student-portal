@@ -7,6 +7,16 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<!-- <link rel="manifest" href="/site.webmanifest" /> -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#16A34A">
+<link rel="manifest" href="./manifest.json">
+
+
     <!-- Intro.js CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
 </head>

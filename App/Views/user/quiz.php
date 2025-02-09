@@ -32,9 +32,22 @@ if ($user) {
 ?>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php include "./layout/sidebar.php"; ?>
+<style>
+/* Hide scrollbar but keep scrolling functionality */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
 
-<div class="max-w-4xl mx-auto py-8">
-    <h1 class="text-4xl font-semibold mb-12 text-center text-blue-600">Available Quizzes</h1>
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+}
+</style>
+
+<div class="max-w-4xl mx-auto py-8 overflow-y-auto max-h-[80vh] scrollbar-hide">
+
+    <h1 class="text-4xl font-semibold mb-12 text-center text-green-600">Available Quizzes</h1>
 
     <form id="quizForm" method="POST" class="space-y-8">
         <?php foreach ($quizzes as $quizData): ?>
@@ -50,7 +63,7 @@ if ($user) {
                 foreach ($questions as $question):
                 ?>
                     <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                        <div class="text-lg font-medium text-gray-800 mb-3">
+                        <div class="text-lg font-medium text-green-800 mb-3">
                             <strong>Question: </strong><?php echo htmlspecialchars($question['question_text']); ?>
                         </div>
 
@@ -66,7 +79,7 @@ if ($user) {
                             ?>
                                 <label class="inline-flex items-center relative">
                                     <input type="radio" name="answer_<?php echo $question['id']; ?>" value="<?php echo $answer['id']; ?>" data-correct="<?php echo $answer['is_correct']; ?>" class="hidden peer" required>
-                                    <span class="cursor-pointer bg-gray-200 text-gray-800 px-6 py-3 rounded-full w-full text-center transition duration-300 ease-in-out transform hover:bg-blue-500 hover:text-white hover:scale-105 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:scale-105 peer-checked:ring-4 peer-checked:ring-blue-300 focus:outline-none">
+                                    <span class="cursor-pointer bg-gray-200 text-gray-800 px-6 py-3 rounded-full w-full text-center transition duration-300 ease-in-out transform hover:bg-green-500 hover:text-white hover:scale-105 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:scale-105 peer-checked:ring-4 peer-checked:ring-blue-300 focus:outline-none">
                                         <?php echo htmlspecialchars($answer['answer_text']); ?>
                                     </span>
                                 </label>
@@ -78,7 +91,7 @@ if ($user) {
         <?php endforeach; ?>
 
         <div class="text-center mt-8">
-            <button type="submit" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-indigo-300 transform transition duration-300 ease-in-out">
+            <button type="submit" class="bg-green-800 via-purple-500 to-pink-500 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-indigo-300 transform transition duration-300 ease-in-out">
                 Submit Answers
             </button>
         </div>

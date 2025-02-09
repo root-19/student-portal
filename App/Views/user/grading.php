@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
 
 <?php include_once "./layout/sidebar.php"; ?>
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg text-black">
-    <h1 class="text-3xl font-semibold text-gray-800 mb-6">User Grades</h1>
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6">Grades</h1>
 
     <?php
     $isGrade12SecondSemester = ($userDetails['user_grade'] == 12 && $userDetails['semester'] == '2nd Semester');
@@ -160,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
         <div class="mt-6">
             <form method="POST" action="">
                 <button type="submit" name="enroll" 
-                    class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 <?= $isEnrollDisabled ? 'opacity-50 cursor-not-allowed' : '' ?>" 
+                    class="px-6 py-3 bg-green-800 text-white rounded-lg hover:bg-green-600 <?= $isEnrollDisabled ? 'opacity-50 cursor-not-allowed' : '' ?>" 
                     <?= $isEnrollDisabled ? 'disabled' : '' ?>>
                     Enroll Now
                 </button>
