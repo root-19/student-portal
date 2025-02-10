@@ -33,7 +33,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <!-- Menu -->
         <ul class="flex-grow p-2 space-y-2">
           <li>
-            <a href="#" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+            <a href="./dashboard.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
               Dashboard
             </a>
           </li>
@@ -98,7 +98,7 @@ if (session_status() == PHP_SESSION_NONE) {
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-2 flex flex-col overflow-hidden lg:pl-64">
+    <div class="flex-1 flex flex-col overflow-hidden lg:pl-20">
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">

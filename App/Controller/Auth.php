@@ -46,13 +46,13 @@ class Auth {
             // Redirect based on role
             switch ($user['role']) {
                 case 'admin':
-                    header("Location: ../Views/admin/index.php");
+                    header("Location: ../Views/admin/dashboard.php");
                     exit();
                 case 'teacher':
-                    header("Location: ../Views/teacher/index.php");
+                    header("Location: ../Views/teacher/profile.php");
                     exit();
                 default: // For any other role, assume user
-                    header("Location: ../Views/user/index.php");
+                    header("Location: ../Views/user/profile.php");
                     exit();
             }
         }
