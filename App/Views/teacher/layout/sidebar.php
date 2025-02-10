@@ -1,7 +1,7 @@
 <?php
 // Start session if not already started
 if (session_status() == PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
 ?>
 <!DOCTYPE html>
@@ -11,23 +11,25 @@ if (session_status() == PHP_SESSION_NONE) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>USER || side</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-white font-sans">
 
   <!-- Main Container -->
-  <div class="flex h-screen overflow-hidden relative">
+  <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-white transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 shadow-lg">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-60 bg-amber-600 font-bold text-white transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 lg:shadow-lg">
       <div class="flex flex-col h-full">
         <!-- Header -->
         <div class="flex items-center justify-between px-4 py-4 border-b border-orange-400">
-          <h1 class="text-xl font-bold"><?php echo htmlspecialchars($_SESSION['user_name']); ?></h1>
+          <h1 class="font-bold"><?php echo htmlspecialchars($_SESSION['user_name']);?> </h1>
           <button id="closeSidebar" class="lg:hidden text-white">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
+
 
         <!-- Menu -->
         <ul class="flex-grow p-4 space-y-4">

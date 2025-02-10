@@ -64,17 +64,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }).start();
 });
 
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch(error => console.log("Service Worker Failed", error));
+  }
 
-let deferredPrompt;
+  let deferredPrompt;
 
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault(); // Prevent default install banner
   deferredPrompt = event;
-
-  // Check if the app was already installed (Prevent pop-up from showing again)
-  if (localStorage.getItem("appInstalled")) {
-    return; // Stop execution if already installed
-  }
 
   // Show the install popup after 3 seconds
   setTimeout(() => {
@@ -83,37 +83,24 @@ window.addEventListener("beforeinstallprompt", (event) => {
 });
 
 // When user clicks the "Install" button
-document.getElementById("installBtn").addEventListener("click", async () => {
+document.getElementById("installBtn").addEventListener("click", () => {
   if (deferredPrompt) {
-    // Update UI to show "Installing..."
-    document.getElementById("installText").innerText = "Installing...";
-    document.getElementById("installButtons").classList.add("hidden");
-
-    // Show the install prompt
     deferredPrompt.prompt();
-    const choiceResult = await deferredPrompt.userChoice;
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install");
+      } else {
+        console.log("User dismissed the install");
+      }
+      deferredPrompt = null;
+    });
 
-    if (choiceResult.outcome === "accepted") {
-      console.log("User accepted the install");
-      localStorage.setItem("appInstalled", "true"); // Save that app was installed
-    } else {
-      console.log("User dismissed the install");
-    }
-
-    // Hide the popup completely
+    // Hide popup after clicking install
     document.getElementById("installPopup").style.display = "none";
-    deferredPrompt = null;
   }
 });
 
 // Close the popup if user clicks "Cancel"
 document.getElementById("cancelBtn").addEventListener("click", () => {
-  document.getElementById("installPopup").style.display = "none";
-});
-
-// Detect if the app has been installed and prevent future popups
-window.addEventListener("appinstalled", () => {
-  console.log("App has been installed");
-  localStorage.setItem("appInstalled", "true"); // Store in localStorage
   document.getElementById("installPopup").style.display = "none";
 });

@@ -3,50 +3,65 @@ require_once '../../Model/Announcement.php';
 
 $announcement = new Announcement();
 $announcements = $announcement->getAnnouncementsWithReactions();
-// var_dump($announcements);
 ?>
 <?php include "./layout/sidebar.php"; ?>
 
-<div class="flex flex-col items-center bg-gray-100 py-8 ml-10">
-    <div class="bg-white mr-44 rounded-lg shadow-lg p-6 w-full max-w-4xl">
-        <h1 class="text-4xl font-bold text-center text-black mb-6 md:text-5xl">Announcements</h1>
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+</style>
+
+<div class="max-w-5xl mx-auto py-10 px-6">
+    <div class="bg-white rounded-xl shadow-xl p-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">📢 Announcements</h1>
         
         <!-- Scrollable Container -->
-        <div class="space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+        <div class="space-y-6 overflow-y-auto max-h-[65vh] scrollbar-hide px-4">
             <?php foreach ($announcements as $announcement): ?>
-                <div class="bg-white shadow rounded-lg p-6">
+                <div class="bg-gray-100 shadow-md rounded-lg p-6 transition duration-300 hover:shadow-lg">
                     <!-- Announcement Details -->
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4 md:text-3xl">Title: 
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-3">
                         <?= htmlspecialchars($announcement['title']); ?>
                     </h3>
-                    <hr>
-                    <p class="text-gray-600 mb-6 md:text-lg">
+                    <p class="text-gray-700 mb-4 leading-relaxed">
                         <?= nl2br(htmlspecialchars($announcement['content'])); ?>
                     </p>
-                    <div class="text-sm text-gray-500 mb-6">
-                        Posted on: <?= htmlspecialchars($announcement['date_created']); ?>
+                    <div class="text-sm text-gray-500 mb-4">
+                        🕒 Posted on: <?= htmlspecialchars($announcement['date_created']); ?>
                     </div>
-                    <!-- Reaction Buttons at the Bottom -->
-                    <div class="flex justify-start space-x-6 text-xl md:text-2xl">
+
+                    <!-- Reaction Buttons -->
+                    <div class="flex items-center space-x-4 text-xl">
                         <button onclick="react(<?= $announcement['announcement_id']; ?>, 'haha')"
-                            class="emoji-btn flex items-center space-x-2 text-gray-600 hover:text-yellow-500 transition">
-                            <span>😆</span>
-                            <span><?= $announcement['haha']; ?></span>
+                            class="emoji-btn flex items-center space-x-1 text-gray-600 hover:text-yellow-500 transition">
+                            <span class="text-2xl">😆</span>
+                            <span class="text-lg"><?= $announcement['haha']; ?></span>
                         </button>
                         <button onclick="react(<?= $announcement['announcement_id']; ?>, 'angry')"
-                            class="emoji-btn flex items-center space-x-2 text-gray-600 hover:text-red-500 transition">
-                            <span>😡</span>
-                            <span><?= $announcement['angry']; ?></span>
+                            class="emoji-btn flex items-center space-x-1 text-gray-600 hover:text-red-500 transition">
+                            <span class="text-2xl">😡</span>
+                            <span class="text-lg"><?= $announcement['angry']; ?></span>
                         </button>
                         <button onclick="react(<?= $announcement['announcement_id']; ?>, 'love')"
-                            class="emoji-btn flex items-center space-x-2 text-gray-600 hover:text-pink-500 transition">
-                            <span>❤️</span>
-                            <span><?= $announcement['love']; ?></span>
+                            class="emoji-btn flex items-center space-x-1 text-gray-600 hover:text-pink-500 transition">
+                            <span class="text-2xl">❤️</span>
+                            <span class="text-lg"><?= $announcement['love']; ?></span>
                         </button>
                         <button onclick="react(<?= $announcement['announcement_id']; ?>, 'like')"
-                            class="emoji-btn flex items-center space-x-2 text-gray-600 hover:text-blue-500 transition">
-                            <span>👍</span>
-                            <span><?= $announcement['like_count']; ?></span>
+                            class="emoji-btn flex items-center space-x-1 text-gray-600 hover:text-blue-500 transition">
+                            <span class="text-2xl">👍</span>
+                            <span class="text-lg"><?= $announcement['like_count']; ?></span>
                         </button>
                     </div>
                 </div>
@@ -54,7 +69,6 @@ $announcements = $announcement->getAnnouncementsWithReactions();
         </div>
     </div>
 </div>
-
 
 <script>
     function react(announcementId, reactionType) {
@@ -66,7 +80,7 @@ $announcements = $announcement->getAnnouncementsWithReactions();
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Reaction saved!');
+                // alert('Reaction saved!');
                 location.reload();
             } else {
                 alert('Failed to save reaction.');

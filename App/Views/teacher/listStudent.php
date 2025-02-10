@@ -20,64 +20,83 @@ if (isset($_GET['school_id'])) {
 
 <?php include "./layout/sidebar.php";?>
 
-<div class="container mx-auto mr-10 text-black">
+<div class="container mx-auto text-black p-6">
 
-    <h1 class="text-2xl font-bold mb-6">Users and Their Advisers</h1>
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">students</h1>
+        <button onclick="openSearchModal()" class="bg-green-800 ml-10 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-700">
+            Search by School ID
+        </button>
+    </div>
 
-    <!-- Search Form -->
-    <form method="GET" action="" class="mb-4">
-        <label for="school_id" class="mr-2">Search by School ID:</label>
-        <input type="text" name="school_id" id="school_id" value="<?php echo htmlspecialchars($searchSchoolId); ?>" class="px-4 py-2 border rounded-md" placeholder="Enter School ID">
-        <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md">Search</button>
-    </form>
+    <!-- Search Modal -->
+    <div id="searchModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 class="text-lg font-bold mb-4">Search by School ID</h2>
+            <form method="GET" action="">
+                <input type="text" name="school_id" id="school_id" class="w-full px-4 py-2 border rounded-md" placeholder="Enter School ID">
+                <div class="flex justify-end mt-4 space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-green-800 text-white rounded-md">Search</button>
+                    <button type="button" onclick="closeSearchModal()" class="px-4 py-2 bg-gray-500 text-white rounded-md">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <?php 
-    $currentStrand = '';
-    $currentSection = '';
-    ?>
-
-    <div class="space-y-6">
+    <div class="mt-6 space-y-6">
         <?php if (!empty($results)) : ?>
-            <?php foreach ($results as $row) : ?>
-                <?php 
-                // Check if we need a new strand or section header
+            <?php 
+            $currentStrand = '';
+            $currentSection = '';
+            foreach ($results as $row) : 
                 if ($currentStrand !== $row['user_strand'] || $currentSection !== $row['user_section']) {
                     $currentStrand = $row['user_strand'];
                     $currentSection = $row['user_section'];
-                ?>
-                    <div class="mt-8">
-                        <h2 class="text-xl font-semibold text-gray-700">Strand: <?php echo htmlspecialchars($currentStrand); ?> - Section: <?php echo htmlspecialchars($currentSection); ?></h2>
-                        <div class="overflow-x-auto mt-4">
-                            <table class="min-w-full bg-white border border-gray-200 shadow-lg rounded-lg">
-                                <thead class="bg-gray-200">
-                                    <tr>
-                                        <th class="text-left px-4 py-2 border">User Name</th>
-                                        <th class="text-left px-4 py-2 border">User School ID</th>
-                                        <th class="text-left px-4 py-2 border">Adviser School ID</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="overflow-y-auto" style="max-height: 400px;">
-                <?php } ?>
+            ?>
+                <div class="mt-8">
+                    <h2 class="text-xl font-semibold text-gray-700 bg-gray-100 p-3 rounded-md shadow">
+                        Strand: <?php echo htmlspecialchars($currentStrand); ?> - Section: <?php echo htmlspecialchars($currentSection); ?>
+                    </h2>
+                    <div class="overflow-x-auto mt-4 border rounded-lg shadow">
+                        <table class="min-w-full bg-white border">
+                            <thead class="bg-gray-200 text-gray-700">
+                                <tr>
+                                    <th class="text-left px-4 py-2 border">User Name</th>
+                                    <th class="text-left px-4 py-2 border">User School ID</th>
+                                    <th class="text-left px-4 py-2 border">Adviser School ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            <?php } ?>
 
                 <tr class="hover:bg-gray-100">
                     <td class="px-4 py-2 border"><?php echo htmlspecialchars($row['user_name'] . ' ' . $row['user_surname']); ?></td>
                     <td class="px-4 py-2 border"><?php echo htmlspecialchars($row['user_school_id']); ?></td>
-                    <!-- <td class="px-4 py-2 border"><?php echo htmlspecialchars($row['adviser_name']); ?></td> -->
                     <td class="px-4 py-2 border"><?php echo htmlspecialchars($row['teacher_school_id']); ?></td>
                 </tr>
 
-                <?php 
-                // Close table body when the next section or strand starts
+            <?php 
                 if (next($results) === false || $currentStrand !== $results[key($results)]['user_strand'] || $currentSection !== $results[key($results)]['user_section']) {
-                ?>
-                                </tbody>
-                            </table>
-                        </div>
+            ?>
+                            </tbody>
+                        </table>
                     </div>
-                <?php } ?>
+                </div>
+            <?php } ?>
             <?php endforeach; ?>
         <?php else : ?>
-            <div class="text-gray-500">No matching records found.</div>
+            <div class="text-gray-500 mt-6 text-center">No matching records found.</div>
         <?php endif; ?>
     </div>
 </div>
+
+<!-- JavaScript for Modal -->
+<script>
+    function openSearchModal() {
+        document.getElementById("searchModal").classList.remove("hidden");
+    }
+
+    function closeSearchModal() {
+        document.getElementById("searchModal").classList.add("hidden");
+    }
+</script>

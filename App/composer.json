@@ -3,8 +3,9 @@
     "description": "this a capstone for gist",
     "license": "MIT",
     "authors": [
-        {
-            "name": "rens acuna"
+        {   
+            "name": "rens acuna",
+            "email": "wasieacuna@gmail.com"
         }
     ],
     "minimum-stability": "stable",
