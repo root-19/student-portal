@@ -22,6 +22,9 @@
 </head>
 <body class="bg-gray-100">
 
+
+
+
     <!-- Header Section -->
     <header class="bg-amber-600 text-white py-4 px-6 flex justify-between items-center" id="header">
         <div class="flex items-center">
@@ -47,6 +50,21 @@
                 <li><a href="#courses" class="hover:text-blue-300">Courses</a></li>
             </ul>
         </nav>
+        <!-- Install Popup (Centered in Header) -->
+<!-- Install Popup (Centered in Header with Logo) -->
+<div id="installPopup" class="absolute top-16 left-1/2 -translate-x-1/2 bg-white text-black p-4 shadow-lg rounded-lg hidden w-72">
+    <div class="flex flex-col items-center">
+        <!-- Logo Image -->
+        <img src="./icons/web-app-manifest-512x512.png" alt="App Logo" class="w-12 h-12 mb-2">
+        
+        <p id="installText" class="text-sm font-semibold text-center">Install this app for a better experience!</p>
+        <div id="installButtons" class="mt-2 flex justify-center space-x-2">
+            <button id="installBtn" class="bg-green-500 text-white px-3 py-1 rounded">Install</button>
+            <button id="cancelBtn" class="bg-gray-300 px-3 py-1 rounded">Cancel</button>
+        </div>
+    </div>
+</div>
+
     </header>
 
     <!-- Mobile Menu (shown when hamburger is clicked) -->
