@@ -94,14 +94,13 @@ class UserModel {
         
         Please keep this information secure. If you have any questions, feel free to contact the school administration. 📞";
         
-    
         $data = [
-            // 'api_token'    => '8ef0db8234c4f5c817ad067342f011f987c45c7e', 
-            'api_token' => '',
+            'api_token'    => '8ef0db8234c4f5c817ad067342f011f987c45c7e',
             'message'      => $message,
             'phone_number' => $phone_number  
+          
         ];
-    
+        
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -109,29 +108,19 @@ class UserModel {
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/x-www-form-urlencoded'
         ]);
-        
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         curl_close($ch);
     
-        if ($curlError) {
-            error_log("CURL Error: " . $curlError);
+        if ($response && !$curlError) {
+          
+            return true; 
+        } else {
+            error_log("SMS API Error: " . $curlError);
             return false; 
         }
-    
-        // ✅ Log API response for debugging
-        error_log("SMS API Response: " . $response);
-    
-        // ✅ Check if API response contains success
-        $responseData = json_decode($response, true);
-        if (isset($responseData['status']) && $responseData['status'] == 'success') {
-            return true;
-        } else {
-            error_log("SMS API Error: " . json_encode($responseData));
-            return false;
-        }
     }
-    
+
     public function login($school_id, $password) {
 
         $stmt = $this->conn->prepare("SELECT id, name, school_id, role, password FROM " . $this->accounts . " WHERE school_id = ?");
@@ -175,7 +164,21 @@ class UserModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-   
+    // Check if email exists in the users table
+    // public function checkEmailExists($email) {
+
+    //     if (!preg_match('/@edu\.ph$/', $email)) {
+    //         return false;
+    //     }
+
+    // // prepare the query
+    //     $stmt = $this->conn->prepare("SELECT * FROM " . $this->accounts . " WHERE email = :email");
+    //     $stmt->bindParam(':email', $email);
+    //     $stmt->execute();
+        
+    //     return $stmt->rowCount() > 0;
+    // }
+
     // update the password sana all INA UPDATE
     public function updatePassword($school_id, $new_password) {
         $hashedPassword = password_hash($new_password, PASSWORD_DEFAULT);
