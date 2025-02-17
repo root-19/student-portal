@@ -82,7 +82,8 @@ if (session_status() == PHP_SESSION_NONE) {
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-2 flex flex-col overflow-hidden lg:pl-20">
+    <div class="flex-1 flex flex-col overflow-hidden lg:pl-20">
+    <!-- flex-1 flex flex-col overflow-hidden lg:pl-20 -->
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">

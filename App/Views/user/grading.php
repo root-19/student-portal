@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
         <table class="min-w-full bg-white border border-gray-300">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="py-2 px-4 border-b">User ID</th>
+                    <!-- <th class="py-2 px-4 border-b">User ID</th> -->
                     <th class="py-2 px-4 border-b">Surname</th>
                     <th class="py-2 px-4 border-b">User Grade</th>
                     <th class="py-2 px-4 border-b">Grade</th>
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
             <tbody>
             <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
                 <tr class="hover:bg-gray-100">
-                    <td class="py-2 px-4 border-b"><?= htmlspecialchars($row['id']) ?></td>
+                    <!-- <td class="py-2 px-4 border-b"><?= htmlspecialchars($row['id']) ?></td> -->
                     <td class="py-2 px-4 border-b"><?= htmlspecialchars($row['surname']) ?></td>
                     <td class="py-2 px-4 border-b"><?= htmlspecialchars($row['user_grade']) ?></td>
                     <td class="py-2 px-4 border-b"><?= htmlspecialchars($row['grade_from_user_grades']) ?></td>

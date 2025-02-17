@@ -15,11 +15,11 @@ if (!$modules) {
     $modules = []; // Ensure $modules is an empty array if no data is fetched
 }
 ?>
-
 <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold text-center mb-6">Modules</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Scrollable Grid Container -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-y-auto max-h-[70vh] px-2 scrollbar-hide">
         <?php foreach ($modules as $module): ?>
             <?php 
             // Decode the images JSON to get the first image
@@ -43,4 +43,3 @@ if (!$modules) {
         <?php endforeach; ?>
     </div>
 </div>
-

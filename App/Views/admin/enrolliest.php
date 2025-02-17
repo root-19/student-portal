@@ -52,22 +52,23 @@ $acceptedStmt->execute();
 <?php include_once "./layout/sidebar.php"; ?>
 
 <!-- Pending Enrollments Table -->
-<div class="bg-white mt-20 rounded-lg shadow-lg p-6 w-full h-15 max-w-2xl text-black">
-  <h1 class="text-3xl font-bold mb-6 text-center mr-20">Enrollment Requests</h1>
-  <div class="overflow-x-auto">
+<!-- Enrollment Requests Table -->
+<div class="bg-white mt-8 rounded-lg shadow-lg p-6 w-full max-w-4xl mx-auto text-black">
+  <h1 class="text-3xl font-bold mb-6 text-center">Enrollment Requests</h1>
+  <div class="overflow-x-auto rounded-lg shadow-md">
     <table class="min-w-full bg-white border border-gray-200">
-      <thead class="bg-gray-200">
+      <thead class="bg-gray-200 text-gray-800">
         <tr>
-          <th class="px-4 py-2 border">Student Name</th>
-          <th class="px-4 py-2 border">Grade</th>
-          <th class="px-4 py-2 border">Semester</th>
-          <th class="px-4 py-2 border">Scholar Status</th>
-          <th class="px-4 py-2 border">Amount</th>
-          <th class="px-4 py-2 border">Enrollment Status</th>
-          <th class="px-4 py-2 border">Action</th>
+          <th class="px-4 py-2 border text-left">Student Name</th>
+          <th class="px-4 py-2 border text-left">Grade</th>
+          <th class="px-4 py-2 border text-left">Semester</th>
+          <th class="px-4 py-2 border text-left">Scholar Status</th>
+          <th class="px-4 py-2 border text-left">Amount</th>
+          <th class="px-4 py-2 border text-left">Enrollment Status</th>
+          <th class="px-4 py-2 border text-left">Action</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-sm">
         <?php while ($row = $pendingStmt->fetch(PDO::FETCH_ASSOC)) : ?>
           <tr class="hover:bg-gray-100">
             <td class="px-4 py-2 border">
@@ -94,7 +95,7 @@ $acceptedStmt->execute();
                   <form action="../../Model/update_enrollment.php" method="POST">
                     <input type="hidden" name="enrollment_id" value="<?php echo $row['enrollment_id']; ?>">
                     <input type="hidden" name="action" value="accept">
-                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
                       Accept
                     </button>
                   </form>
@@ -111,21 +112,21 @@ $acceptedStmt->execute();
 </div>
 
 <!-- Accepted Enrollments Table -->
-<div class="bg-white mt-20 rounded-lg shadow-lg p-6 w-full h-15 max-w-2xl text-black">
-  <h1 class="text-3xl font-bold mb-6 text-center mr-20">Accepted Enrollments</h1>
-  <div class="overflow-x-auto">
+<!-- <div class="bg-white mt-8 rounded-lg shadow-lg p-6 w-full max-w-4xl mx-auto text-black">
+  <h1 class="text-3xl font-bold mb-6 text-center">Accepted Enrollments</h1>
+  <div class="overflow-x-auto rounded-lg shadow-md">
     <table class="min-w-full bg-white border border-gray-200">
-      <thead class="bg-gray-200">
+      <thead class="bg-gray-200 text-gray-800">
         <tr>
-          <th class="px-4 py-2 border">Student Name</th>
-          <th class="px-4 py-2 border">Grade</th>
-          <th class="px-4 py-2 border">Semester</th>
-          <th class="px-4 py-2 border">Scholar Status</th>
-          <th class="px-4 py-2 border">Amount</th>
-          <th class="px-4 py-2 border">Enrollment Status</th>
+          <th class="px-4 py-2 border text-left">Student Name</th>
+          <th class="px-4 py-2 border text-left">Grade</th>
+          <th class="px-4 py-2 border text-left">Semester</th>
+          <th class="px-4 py-2 border text-left">Scholar Status</th>
+          <th class="px-4 py-2 border text-left">Amount</th>
+          <th class="px-4 py-2 border text-left">Enrollment Status</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-sm">
         <?php while ($row = $acceptedStmt->fetch(PDO::FETCH_ASSOC)) : ?>
           <tr class="hover:bg-gray-100">
             <td class="px-4 py-2 border">
@@ -151,5 +152,4 @@ $acceptedStmt->execute();
       </tbody>
     </table>
   </div>
-</div>
-
+</div> -->
