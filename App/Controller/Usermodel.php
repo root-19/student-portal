@@ -22,9 +22,25 @@ class UserModel {
         $section, $strand, $phone_number, $email, $password, 
         $adviser, $semester, $role
     ) {
-        // Validate email before proceeding (optional, if you still need email validation)
+        // Validate email before proceeding
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return false; // Invalid email, return false to prevent errors
+            return "Invalid email address.";
+        }
+    
+        // Convert empty LRN to NULL
+        $lrn_number = !empty($lrn_number) ? $lrn_number : null;
+    
+        // Check if the LRN number already exists (only if LRN is provided)
+        if (!empty($lrn_number)) {
+            $checkQuery = "SELECT COUNT(*) FROM " . $this->accounts . " WHERE lrn_number = :lrn_number";
+            $checkStmt = $this->conn->prepare($checkQuery);
+            $checkStmt->bindParam(':lrn_number', $lrn_number);
+            $checkStmt->execute();
+            $count = $checkStmt->fetchColumn();
+    
+            if ($count > 0) {
+                return "LRN number already exists. Please use a different one.";
+            }
         }
     
         // Insert query for registering the user
@@ -38,7 +54,6 @@ class UserModel {
                 :adviser, :semester, :role)";
     
         $stmt = $this->conn->prepare($query);
-    
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     
         $stmt->bindParam(':name', $name);
@@ -46,7 +61,7 @@ class UserModel {
         $stmt->bindParam(':surname', $surname);
         $stmt->bindParam(':gender', $gender);
         $stmt->bindParam(':scholar', $scholar);
-        $stmt->bindParam(':lrn_number', $lrn_number);
+        $stmt->bindParam(':lrn_number', $lrn_number, PDO::PARAM_NULL); // Allow NULL values
         $stmt->bindParam(':school_id', $school_id);
         $stmt->bindParam(':date_of_birth', $date_of_birth);
         $stmt->bindParam(':grade', $grade);
@@ -88,19 +103,22 @@ class UserModel {
     // SMS Notification Method using SMS API
     public function sendSMSNotification($phone_number, $school_id, $password) {
         $url = 'https://sms.iprogtech.com/api/v1/sms_messages';
-        $message = "Welcome to Gateways Institute of Science and Technology! 🎓 
-        Your School ID: {$school_id} 
-        Password: {$password} 
-        
-        Please keep this information secure. If you have any questions, feel free to contact the school administration. 📞";
-        
+        $message = "Welcome to Gateways Institute of Science and Technology! " . PHP_EOL .
+        "Your School ID: {$school_id}" . PHP_EOL .
+        "Password: {$password}" . PHP_EOL . PHP_EOL .
+        "Please keep this information secure. If you have any questions, feel free to contact the school administration. ";
+        // Format the phone number properly
+        if (strpos($phone_number, '0') === 0) {
+            $phone_number = '+63' . substr($phone_number, 1);
+        }
+
         $data = [
-            'api_token'    => '8ef0db8234c4f5c817ad067342f011f987c45c7e',
+            'api_token'    => '',
             'message'      => $message,
-            'phone_number' => $phone_number  
-          
+            'phone_number' => $phone_number,
+            'sms_provider' => 1 
         ];
-        
+    
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -108,15 +126,18 @@ class UserModel {
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/x-www-form-urlencoded'
         ]);
+        
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         curl_close($ch);
+
+        error_log("SMS API Response: " . $response);
     
         if ($response && !$curlError) {
-          
+            error_log("SMS sent successfully to: " . $phone_number);
             return true; 
         } else {
-            error_log("SMS API Error: " . $curlError);
+            error_log("SMS failed for: " . $phone_number . " - Error: " . $curlError);
             return false; 
         }
     }
@@ -164,20 +185,6 @@ class UserModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    // Check if email exists in the users table
-    // public function checkEmailExists($email) {
-
-    //     if (!preg_match('/@edu\.ph$/', $email)) {
-    //         return false;
-    //     }
-
-    // // prepare the query
-    //     $stmt = $this->conn->prepare("SELECT * FROM " . $this->accounts . " WHERE email = :email");
-    //     $stmt->bindParam(':email', $email);
-    //     $stmt->execute();
-        
-    //     return $stmt->rowCount() > 0;
-    // }
 
     // update the password sana all INA UPDATE
     public function updatePassword($school_id, $new_password) {
@@ -300,7 +307,7 @@ class UserModel {
    public function getPredefinedSubjects() {
         return  [ 
             '11' => [
-                'ict' => [
+                'ICT' => [
                     '1st Semester' => [
                         'Comprog 1 & 2', 'Oral Communication', 'PE 1', 'PR 1', 'Komunikasyon at Pananaliksik',
                         'General Mathematics', 'Earth & Life Science', 'Empowerment Technology', '21st Century',
@@ -332,10 +339,7 @@ class UserModel {
                 ],
             ],
             '12' => [
-                'STEM' => [
-                    '1st Semester' => ['UCSP', 'Philosophy', 'PE 3', 'Physical Science', 'EAPP', 'FABM 2'],
-                    '2nd Semester' => ['Work Immersion', 'Applied Economics', 'Research in Daily Life', 'PE 4', 'Capstone Project'],
-                ],
+                
                 'HUMMS' => [
                     '1st Semester' => ['UCSP', 'Entrepreneurship', 'PE 3', 'Business Ethics', 'Business Finance', 'FABM 2'],
                     '2nd Semester' => ['Research in Daily Life', 'EAPP', 'Introduction to World Religions', 'PE 4', 'Capstone Project'],
@@ -356,14 +360,7 @@ class UserModel {
         ]; 
         
     }
-    // public function saveGrades($userId, $subject, $grade) {
-    //     $query = "INSERT INTO user_grades (user_id, subject, grade) VALUES (:user_id, :subject, :grade)";
-    //     $stmt = $this->conn->prepare($query);
-    //     $stmt->bindParam(':user_id', $userId);
-    //     $stmt->bindParam(':subject', $subject);
-    //     $stmt->bindParam(':grade', $grade);
-    //     return $stmt->execute();
-    // }
+ 
 
      // Fetch user details with grades
      public function getUserGrades($user_id) {
@@ -387,6 +384,25 @@ class UserModel {
         $stmt->execute();
         
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getUsersByGradeSemesterAndSearch($grade, $semester, $searchTerm) {
+        $query = "SELECT * FROM users WHERE grade = :grade AND semester = :semester";
+        
+        if (!empty($searchTerm)) {
+            $query .= " AND (name LIKE :search OR surname LIKE :search OR school_id LIKE :search)";
+        }
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':grade', $grade);
+        $stmt->bindParam(':semester', $semester);
+        
+        if (!empty($searchTerm)) {
+            $searchTerm = "%$searchTerm%";
+            $stmt->bindParam(':search', $searchTerm);
+        }
+    
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     

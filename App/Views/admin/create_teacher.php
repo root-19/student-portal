@@ -1,6 +1,6 @@
 <?php
 require_once "../../Database/Database.php";
-require_once "../../Controller/Usermodel.php";
+require_once "../../Controller/UserModel.php";
 require_once "../../Controller/Auth.php";
 require_once "../../vendor/autoload.php";
 
@@ -18,47 +18,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $middle_initial = $_POST['middle_initial'] ?? '';
     $surname = $_POST['surname'] ?? '';
     $gender = $_POST['gender'] ?? '';
-    $scholar = $_POST['scholar'] ?? '';
-    $lrn_number = $_POST['lrn_number'] ?? '';
     $school_id = $_POST['school_id'] ?? '';
     $date_of_birth = $_POST['date_of_birth'] ?? '';
-    $grade = $_POST['grade'] ?? '';
-    $section = $_POST['section'] ?? '';
-    $strand = $_POST['strand'] ?? '';
     $phone_number = $_POST['phone_number'] ?? '';
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $semester = $_POST['semester'] ?? '';
-    $adviser = $_POST['adviser'] ?? '';
-
+    
     // Role is automatically set to "teacher"
     $role = 'teacher';
 
-    // Initialize UserModel and register the teacher
+    // Register the teacher
     $registrationSuccess = $userModel->register(
         $name,
         $middle_initial,
         $surname,
         $gender,
-        $scholar,
-        $lrn_number,
+        '', // Scholar not required
+        '', // LRN Number not required
         $school_id,
         $date_of_birth,
-        $grade,
-        $section,
-        $strand,
+        '', // Grade not required
+        '', // Section not required
+        '', // Strand not required
         $phone_number,
         $email,
         $password,
-        $adviser,
-        $semester,
+        '', // Adviser not required
+        '', // Semester not required
         $role
     );
 
     if ($registrationSuccess) {
-        echo "<p>Teacher registration successful! An email has been sent to {$phone_number}.</p>";
+        error_log("Teacher registration successful! An SMS has been sent to {$phone_number}.");
     } else {
-        error_log( "<p>Registration failed. Please try again or contact support.</p>");
+        error_log("Registration failed. Please try again or contact support.");
     }
 }
 ?>

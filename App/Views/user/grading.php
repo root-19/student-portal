@@ -27,9 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
     if ($userDetails) {
         $name = $userDetails['name'];
         $surname = $userDetails['surname'];
-        $scholar =  $userDetails['scholar']; // Ensure integer value
+        $scholar = $userDetails['scholar'];
         $school_id = $userDetails['school_id'];
-        $fee = ($scholar === 'scholar') ? 0 : 7000; // Determine fee
+
+        // Determine fee based on scholar status
+        if ($scholar === 'QVR-Voucher') {
+            $fee = 0;
+        } elseif ($scholar === 'ESC') {
+            $fee = 7000 * 0.5; // 50% discount for ESC
+        } else { // ALS/Balik or Pay
+            $fee = 7000;
+        }
 
         try {
             $query = "INSERT INTO enrollments 
@@ -45,12 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
             $stmtInsert->bindParam(':school_id', $school_id);
             $stmtInsert->execute();
 
-            // If the user is required to pay (i.e., scholar status is 'paid')
-            if ($scholar === 'pay') {
+            // Handle the payment redirection or success alert
+            if ($scholar === 'ALS/Balik' || $scholar === 'ESC') {
+                // Redirect to PayMongo with appropriate fee
                 header("Location: ../../../../Model/paymongo.php?user_id=$user_id&fee=$fee");
                 exit;
             } else {
-                // Output a complete HTML document with SweetAlert for scholar users
+                // Display SweetAlert for QVR-Voucher or Scholar status
                 ?>
                 <!DOCTYPE html>
                 <html lang="en">
@@ -64,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Enrollment Submitted',
-                            text: 'You are a scholar. Your enrollment request has been submitted for approval.',
+                            text: 'You are a scholar (QVR-Voucher). Your enrollment request has been submitted for approval.',
                             confirmButtonText: 'OK'
                         }).then(() => {
                             window.location.href = 'grading.php';
@@ -76,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
                 exit;
             }
         } catch (Exception $e) {
-            // Output error message via SweetAlert
+            // Display error message using SweetAlert
             ?>
             <!DOCTYPE html>
             <html lang="en">
@@ -103,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
     }
 }
 ?>
+
 
 <?php include_once "./layout/sidebar.php"; ?>
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg text-black">

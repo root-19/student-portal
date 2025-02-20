@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <div class="bg-white bg-opacity-90 p-6 rounded-lg shadow-lg w-full max-w-md md:max-w-lg lg:max-w-xl">
         <h2 class="text-xl md:text-2xl font-bold mb-4 text-center  text-black"> Student Register</h2>
         <?php if ($message): ?>
-            <div class="bg-green-200 p-2 text-red-600 text-center rounded mb-3"><?php echo $message; ?></div>
+            <div class="bg-green-200 p-2 text-green-600 text-center rounded mb-3"><?php echo $message; ?></div>
         <?php endif; ?>
         <form method="POST" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-black">
             <input type="text" name="name" placeholder="First Name" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -95,13 +95,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             </select>
             <select name="scholar" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="" disabled selected>Select Scholar Type</option>
-                <option value="scholar">Scholar</option>
-                <option value="pay">Pay</option>
+                <option value="qvr-voucher">qvr-voucher</option>
+                <option value="esc-50%-off">esc-50% off</option>
+                <option value="Als/balik">Als/balik </option>
             </select>
             <input type="text" name="lrn_number" placeholder="LRN Number" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="text" name="school_id" placeholder="School ID" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="date" name="date_of_birth" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <input type="text" name="grade" placeholder="Grade Level" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select name="grade" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <option value="" disabled selected>Select Grade Level</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+</select>
+
             <input type="text" name="section" placeholder="Section" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <select name="adviser" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
     <option value="" disabled selected>Select Adviser</option>
@@ -117,7 +123,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <option value="adviser10">Adviser 10</option>
 </select>
 
-            <input type="text" name="strand" placeholder="Strand" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+<select name="strand" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <option value="" disabled selected>Select Strand</option>
+    <option value="ICT">ICT</option>
+    <option value="ABM">ABM</option>
+    <option value="HUMS">HUMS</option>
+    <option value="HE">HE</option>
+</select>
+
             <input type="text" name="phone_number" placeholder="Phone Number" required pattern="\d{10,15}" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="email" name="email" placeholder="Email" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="password" name="password" placeholder="Password" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">

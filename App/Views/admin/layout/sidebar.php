@@ -9,7 +9,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>USER || side</title>
+  <title>ADMIN</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -88,7 +88,7 @@ if (session_status() == PHP_SESSION_NONE) {
             </a>
           </li>
 <li> -->
-            <a href="./logout.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
+            <a href="./student-graduating.php" class="block px-4 py-2 rounded-md bg-transparent hover:bg-gray-700 hover:text-orange-400 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-lg">
              graduating students
             </a>
           </li>

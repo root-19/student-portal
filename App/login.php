@@ -68,9 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             </form>
 
             <!-- Forgot Password Link -->
-            <div class="mt-4 text-center">
+            <!-- <div class="mt-4 text-center">
                 <a href="forget-password.php" style="color: var(--yellow)" class="hover:underline">Forgot your password?</a>
-            </div>
+            </div> -->
 
             <!-- Register Link -->
             <!-- <p class="mt-4 text-center text-gray-600">Don't have an account? <a href="../register.php" style="color: var(--yellow)" class="hover:underline">Register here</a></p> -->
