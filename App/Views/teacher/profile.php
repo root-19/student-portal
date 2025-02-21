@@ -23,7 +23,7 @@ if (!$user) {
 ?>
 
 <?php include "./layout/sidebar.php"; ?>
-<div class="bg-white   mt-20 rounded-lg shadow-lg p-6 w-full h-15 max-w-2xl">
+<div class="bg-white mt-10 mx-auto rounded-lg shadow-lg p-6 w-full max-w-1xl">
         <h1 class="text-2xl font-bold text-center text-gray-800 mb-6 text-black">Profile</h1>
 
 <div id="profileView" class="space-y-4">

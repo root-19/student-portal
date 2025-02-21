@@ -10,15 +10,32 @@ $candidate = new Candidate($db);
 // Handle AJAX delete request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $deleteId = $_POST['delete_id'];
-    $deleteQuery = "DELETE FROM candidates WHERE id = :id";
-    $deleteStmt = $db->prepare($deleteQuery);
-    $deleteStmt->bindParam(':id', $deleteId);
-    
-    if ($deleteStmt->execute()) {
+
+    try {
+        // Begin transaction
+        $db->beginTransaction();
+
+        // Delete related votes first
+        $deleteVotesQuery = "DELETE FROM votes WHERE candidate_id = :id";
+        $deleteVotesStmt = $db->prepare($deleteVotesQuery);
+        $deleteVotesStmt->bindParam(':id', $deleteId);
+        $deleteVotesStmt->execute();
+
+        // Now delete the candidate
+        $deleteQuery = "DELETE FROM candidates WHERE id = :id";
+        $deleteStmt = $db->prepare($deleteQuery);
+        $deleteStmt->bindParam(':id', $deleteId);
+        $deleteStmt->execute();
+
+        // Commit transaction
+        $db->commit();
+
         echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false]);
+    } catch (PDOException $e) {
+        $db->rollBack();
+        echo json_encode(["success" => false, "error" => $e->getMessage()]);
     }
+
     exit; // Stop further execution
 }
 
@@ -39,7 +56,6 @@ $stmt->execute();
     <div class="w-full bg-gray-50 p-4 md:p-6 rounded-lg shadow-sm">
         <h2 class="text-xl font-bold mb-4 text-center text-gray-800">List of Candidates</h2>
 
-        <!-- Scrollable Table -->
         <div class="overflow-y-auto max-h-[400px] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
             <table class="min-w-full bg-white border border-gray-200 table-auto">
                 <thead class="bg-gray-100 sticky top-0">
@@ -99,10 +115,10 @@ $stmt->execute();
                     if (data.success) {
                         Swal.fire("Deleted!", "Candidate has been deleted.", "success")
                         .then(() => {
-                            document.getElementById("row-" + candidateId).remove(); // Remove row without reload
+                            document.getElementById("row-" + candidateId).remove();
                         });
                     } else {
-                        Swal.fire("Error!", "Failed to delete candidate.", "error");
+                        Swal.fire("Error!", data.error || "Failed to delete candidate.", "error");
                     }
                 })
                 .catch(() => Swal.fire("Error!", "Something went wrong.", "error"));

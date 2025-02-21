@@ -83,7 +83,7 @@ if (session_status() == PHP_SESSION_NONE) {
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-2 flex flex-col overflow-hidden lg:pl-20">
+    <div class="flex-1 flex flex-col overflow-hidden lg:pl-20">
       <!-- Mobile Navbar -->
       <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
         <button id="openSidebar" class="text-orange-500">
@@ -100,7 +100,9 @@ if (session_status() == PHP_SESSION_NONE) {
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden lg:hidden z-30"></div>
 
       <!-- Content Area -->
+      <main class="p-6 mt-8">
       <!-- <main class="p-6">
+
         <h1 class="text-3xl font-bold text-orange-500 mb-4">Welcome to My App</h1>
         <p class="text-gray-700">This is the main content area. Resize the screen to see the responsive sidebar in action!</p>
       </main> -->
