@@ -20,7 +20,7 @@ class UserModel {
         $name, $middle_initial, $surname, $gender, $scholar, 
         $lrn_number, $school_id, $date_of_birth, $grade, 
         $section, $strand, $phone_number, $email, $password, 
-        $adviser, $semester, $role
+        $adviser, $semester, $schedule, $role
     ) {
         // Validate email before proceeding
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -51,7 +51,7 @@ class UserModel {
         VALUES (:name, :middle_initial, :surname, :gender, :scholar, 
                 :lrn_number, :school_id, :date_of_birth, :grade, 
                 :section, :strand, :phone_number, :email, :password, 
-                :adviser, :semester, :role)";
+                :adviser, :semester, :schedule, :role)";
     
         $stmt = $this->conn->prepare($query);
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -72,12 +72,13 @@ class UserModel {
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':adviser', $adviser);
         $stmt->bindParam(':semester', $semester);
+        $stmt->bindParam(':schedule', $schedule);
         $stmt->bindParam(':role', $role);
     
         if ($stmt->execute()) {
             // Once registration is successful, send SMS notification to the registered user
             if (!empty($phone_number)) {
-                $smsSent = $this->sendSMSNotification($phone_number, $school_id, $password);
+                $smsSent = $this->sendSMSNotification($phone_number, $schedule, $school_id, $password);
     
                 if ($smsSent) {
                     return true; // Registration and SMS sending successful
@@ -101,11 +102,12 @@ class UserModel {
     }
     
     // SMS Notification Method using SMS API
-    public function sendSMSNotification($phone_number, $school_id, $password) {
+    public function sendSMSNotification($phone_number, $schedule, $school_id, $password) {
         $url = 'https://sms.iprogtech.com/api/v1/sms_messages';
         $message = "Welcome to Gateways Institute of Science and Technology! " . PHP_EOL .
         "Your School ID: {$school_id}" . PHP_EOL .
         "Password: {$password}" . PHP_EOL . PHP_EOL .
+        "your schedule: {$schedule}" . PHP_EOL . PHP_EOL .
         "Please keep this information secure. If you have any questions, feel free to contact the school administration. ";
         // Format the phone number properly
         if (strpos($phone_number, '0') === 0) {

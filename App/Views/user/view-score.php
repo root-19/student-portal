@@ -23,12 +23,12 @@ $scores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <?php if (!empty($scores)): ?>
     <div class="max-w-5xl mx-auto py-20 px-8 mr-60">
         <span class="text-3xl font-semibold text-center text-gray-800">Your Quiz Scores</span>
-        <table class="min-w-full bg-white border border-gray-300 shadow-lg rounded-lg mx-auto mt-8">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="py-4 px-6 text-left text-lg font-semibold text-gray-700">Quiz Title</th>
-                    <th class="py-4 px-6 text-left text-lg font-semibold text-gray-700">Correct Answers</th>
-                    <th class="py-4 px-6 text-left text-lg font-semibold text-gray-700">Percentage</th>
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Quiz Title</th>
+                    <th scope="col" class="px-6 py-3">Correct Answers</th>
+                    <th scope="col" class="px-6 py-3">Percentage</th>
                 </tr>
             </thead>
             <tbody>

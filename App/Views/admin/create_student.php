@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $password = $_POST['password'] ?? null;
     $semester = $_POST['semester'] ?? null;
     $adviser = $_POST['adviser'] ?? null;
+    $schedule = $_POST['schedule'] ?? null;
 
     // Validate required fields
     if (!$gender || !$scholar) {
@@ -78,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             $email,
             $password,
             $adviser,
-            $semester
+            $semester,
+            $schedule,
         );
 
         if ($result === true) {
@@ -108,6 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
+            </select>
+            <select name="schedule" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="" disabled selected>Select schedule</option>
+                <option value="pm session 1pm - 7:15pm">Pm session 1pm - 7:15pm</option>
+                <option value="am session 7am - 1pm">AM session 7am - 1pm</option>
             </select>
             <select name="scholar" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="" disabled selected>Select Scholar Type</option>

@@ -126,13 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
     }
 
     if ($stmt->rowCount() > 0): ?>
-        <table class="min-w-full bg-white border border-gray-300">
-            <thead>
+     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="bg-gray-200">
                     <!-- <th class="py-2 px-4 border-b">User ID</th> -->
-                    <th class="py-2 px-4 border-b">Surname</th>
-                    <th class="py-2 px-4 border-b">User Grade</th>
-                    <th class="py-2 px-4 border-b">Grade</th>
+                    <th scope="col" class="px-6 py-3">Surname</th>
+                    <th scope="col" class="px-6 py-3">User Grade</th>
+                    <th scope="col" class="px-6 py-3">Grade</th>
                 </tr>
             </thead>
             <tbody>

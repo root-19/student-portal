@@ -6,6 +6,7 @@
     <title>Student Portal Landing Page</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="./Storage/image/logo.png" />
     <link rel="stylesheet" href="./public/css/style.css">
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -130,19 +131,19 @@
             <p class="mb-4">Explore various courses offered through the portal. Here are a few examples:</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="bg-gray-200 p-6 rounded-lg">
-                    <img src="https://via.placeholder.com/150" alt="Course 1" class="w-full h-32 object-cover rounded mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Course 1: Web Development</h3>
-                    <p>Learn the basics of web development with HTML, CSS, and JavaScript.</p>
+                    <img src="./Storage/image/abm.jpg" alt="Course 1" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Accountancy, Business, and Management (ABM)</h3>
+                    <!-- <p>Learn the basics of web development with HTML, CSS, and JavaScript.</p> -->
                 </div>
                 <div class="bg-gray-200 p-6 rounded-lg">
-                    <img src="https://via.placeholder.com/150" alt="Course 2" class="w-full h-32 object-cover rounded mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Course 2: Data Science</h3>
-                    <p>Understand the fundamentals of data analysis and machine learning.</p>
+                    <img src="./Storage/image/ict.jpg" alt="Course 2" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Information and Communication Technology (ICT)</h3>
+                    <!-- <p>Understand the fundamentals of data analysis and machine learning.</p> -->
                 </div>
                 <div class="bg-gray-200 p-6 rounded-lg">
-                    <img src="https://via.placeholder.com/150" alt="Course 3" class="w-full h-32 object-cover rounded mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Course 3: Digital Marketing</h3>
-                    <p>Explore the world of online marketing and social media strategies.</p>
+                    <img src="./Storage//image/he.jpg" alt="Course 3" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Home Economics (HE)</h3>
+                    <!-- <p>Explore the world of online marketing and social media strategies.</p> -->
                 </div>
             </div>
         </section>

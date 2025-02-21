@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password,
         '', // Adviser not required
         '', // Semester not required
+        '',
         $role
     );
 
