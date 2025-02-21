@@ -1,9 +1,10 @@
 
 <?php include "./layout/sidebar.php";?>
 <div class="container mx-auto p-6 h-screen mb-40 ml-20">
-        <h1 class="text-3xl font-bold text-center mb-6 text-black">Create a Quiz</h1>
+    
 
         <div class="bg-white p-10 rounded-lg shadow-md h-full overflow-y-auto max-w-4xl mx-auto mr-60">
+        <h1 class="text-3xl font-bold text-center mb-6 text-black">Create a Quiz</h1>
             <form id="quizForm" action="../../Model/save_quiz.php" method="POST" class="space-y-4">
                 <!-- Quiz Title -->
                 <div class="text-black">

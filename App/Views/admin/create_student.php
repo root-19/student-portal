@@ -13,6 +13,20 @@ $conn = $db->connect();
 $userModel = new UserModel($conn);
 $auth = new Auth($userModel);
 
+// Fetch teachers from the database
+$teachers = [];
+$query = "SELECT id, name, surname FROM users WHERE role = 'teacher'";
+
+// Prepare and execute the query
+$stmt = $conn->prepare($query);
+$stmt->execute();
+
+// Fetch results
+$teachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if (empty($teachers)) {
+    echo "No teachers found."; // Debugging: Check if no results are returned
+}
 $message = ""; 
 
 // Handle registration request
@@ -73,6 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             $message = $result;
     }
 }
+
+
 }
 ?>
 <?php include "./layout/sidebar.php"; ?>
@@ -111,17 +127,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             <input type="text" name="section" placeholder="Section" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <select name="adviser" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
     <option value="" disabled selected>Select Adviser</option>
-    <option value="adviser1">Adviser 1</option>
-    <option value="adviser2">Adviser 2</option>
-    <option value="adviser3">Adviser 3</option>
-    <option value="adviser4">Adviser 4</option>
-    <option value="adviser5">Adviser 5</option>
-    <option value="adviser6">Adviser 6</option>
-    <option value="adviser7">Adviser 7</option>
-    <option value="adviser8">Adviser 8</option>
-    <option value="adviser9">Adviser 9</option>
-    <option value="adviser10">Adviser 10</option>
+    <?php if (!empty($teachers)): ?>
+        <?php foreach ($teachers as $teacher): ?>
+            <option value="<?= $teacher['id']; ?>">
+                <?= htmlspecialchars($teacher['name'] . " " . $teacher['surname']); ?>
+            </option>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <option value="" disabled>No Teachers Available</option>
+    <?php endif; ?>
 </select>
+
 
 <select name="strand" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
     <option value="" disabled selected>Select Strand</option>
