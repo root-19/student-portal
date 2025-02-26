@@ -27,7 +27,7 @@
 
 
     <!-- Header Section -->
-    <header class="bg-amber-600 text-white py-4 px-6 flex justify-between items-center" id="header">
+    <header class="bg-green-600 text-white py-4 px-6 flex justify-between items-center" id="header">
         <div class="flex items-center">
             <img src="./Storage/image/logo.png" alt="Logo" class="w-15 h-12">
             <h1 class="ml-3 text-xl font-bold">Student Portal</h1>

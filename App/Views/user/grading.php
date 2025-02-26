@@ -23,6 +23,11 @@ $averageGrade = 0;
 
 $userDetails = $stmt->fetch(PDO::FETCH_ASSOC);
 
+// This code block handles the enrollment process for a user. It checks if the request method is POST and if the 'enroll' form field is set. It then retrieves the user details from the database and determines the appropriate enrollment fee based on the user's scholar status. The code then inserts the enrollment details into the 'enrollments' table in the database.
+
+// If the user is a scholar (QVR-Voucher or ESC), the code displays a success message using SweetAlert. If the user is an ALS/Balik or ESC scholar, the code redirects the user to the PayMongo payment page with the appropriate fee.
+
+// If an exception occurs during the enrollment process, the code displays an error message using SweetAlert.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
     if ($userDetails) {
         $name = $userDetails['name'];

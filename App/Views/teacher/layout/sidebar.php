@@ -18,10 +18,11 @@ if (session_status() == PHP_SESSION_NONE) {
   <!-- Main Container -->
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-60 bg-amber-600 font-bold text-white transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 lg:shadow-lg">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-60 bg-green-600 font-bold text-white transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 lg:shadow-lg">
       <div class="flex flex-col h-full">
         <!-- Header -->
-        <div class="flex items-center justify-between px-4 py-4 border-b border-orange-400">
+        <div class="flex items-center justify-between px-4 py-4 border-b border-green-400">
           <h1 class="font-bold"><?php echo htmlspecialchars($_SESSION['user_name']);?> </h1>
           <button id="closeSidebar" class="lg:hidden text-white">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +30,6 @@ if (session_status() == PHP_SESSION_NONE) {
             </svg>
           </button>
         </div>
-
 
         <!-- Menu -->
         <ul class="flex-grow p-4 space-y-4">
@@ -85,13 +85,13 @@ if (session_status() == PHP_SESSION_NONE) {
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden lg:pl-20">
       <!-- Mobile Navbar -->
-      <header class="bg-black shadow-md p-4 lg:hidden flex items-center justify-between">
-        <button id="openSidebar" class="text-orange-500">
+      <header class="bg-green-600 shadow-md p-4 lg:hidden flex items-center justify-between">
+        <button id="openSidebar" class="text-white">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
-        <h1 class="text-lg font-bold text-orange-500">Student Portal</h1>
+        <h1 class="text-lg font-bold text-white">Student Portal</h1>
       </header>
     
 
