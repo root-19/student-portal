@@ -22,15 +22,12 @@ class UserModel {
         $section, $strand, $phone_number, $email, $password, 
         $adviser, $semester, $schedule, $role
     ) {
-        // Validate email before proceeding
         if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Invalid email address.";
         }
     
-        // Convert empty LRN to NULL
         $lrn_number = !empty($lrn_number) ? $lrn_number : null;
     
-        // Check if the LRN number already exists (only if LRN is provided)
         if (!empty($lrn_number)) {
             $checkQuery = "SELECT COUNT(*) FROM " . $this->accounts . " WHERE lrn_number = :lrn_number";
             $checkStmt = $this->conn->prepare($checkQuery);
@@ -43,54 +40,58 @@ class UserModel {
             }
         }
     
-        // Insert query for registering the user
         $query = "INSERT INTO " . $this->accounts . " 
         (name, middle_initial, surname, gender, scholar, lrn_number, 
          school_id, date_of_birth, grade, section, strand, 
-         phone_number, email, password, adviser, semester, role) 
+         phone_number, email, password, adviser, semester, schedule, role) 
         VALUES (:name, :middle_initial, :surname, :gender, :scholar, 
                 :lrn_number, :school_id, :date_of_birth, :grade, 
                 :section, :strand, :phone_number, :email, :password, 
                 :adviser, :semester, :schedule, :role)";
     
-        $stmt = $this->conn->prepare($query);
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        try {
+            $stmt = $this->conn->prepare($query);
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':middle_initial', $middle_initial);
-        $stmt->bindParam(':surname', $surname);
-        $stmt->bindParam(':gender', $gender);
-        $stmt->bindParam(':scholar', $scholar);
-        $stmt->bindParam(':lrn_number', $lrn_number, PDO::PARAM_NULL); // Allow NULL values
-        $stmt->bindParam(':school_id', $school_id);
-        $stmt->bindParam(':date_of_birth', $date_of_birth);
-        $stmt->bindParam(':grade', $grade);
-        $stmt->bindParam(':section', $section);
-        $stmt->bindParam(':strand', $strand);
-        $stmt->bindParam(':phone_number', $phone_number);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':adviser', $adviser);
-        $stmt->bindParam(':semester', $semester);
-        $stmt->bindParam(':schedule', $schedule);
-        $stmt->bindParam(':role', $role);
+            $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+$stmt->bindValue(':middle_initial', $middle_initial, PDO::PARAM_STR);
+$stmt->bindValue(':surname', $surname, PDO::PARAM_STR);
+$stmt->bindValue(':gender', $gender, PDO::PARAM_STR);
+$stmt->bindValue(':scholar', $scholar, PDO::PARAM_STR);
+$stmt->bindValue(':lrn_number', !empty($lrn_number) ? $lrn_number : null, !empty($lrn_number) ? PDO::PARAM_STR : PDO::PARAM_NULL);
+$stmt->bindValue(':school_id', $school_id, PDO::PARAM_STR);
+$stmt->bindValue(':date_of_birth', $date_of_birth, PDO::PARAM_STR);
+$stmt->bindValue(':grade', $grade, PDO::PARAM_STR);
+$stmt->bindValue(':section', $section, PDO::PARAM_STR);
+$stmt->bindValue(':strand', $strand, PDO::PARAM_STR);
+$stmt->bindValue(':phone_number', $phone_number, PDO::PARAM_STR);
+$stmt->bindValue(':email', $email, PDO::PARAM_STR);
+$stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+$stmt->bindValue(':adviser', $adviser, PDO::PARAM_STR);
+$stmt->bindValue(':semester', $semester, PDO::PARAM_STR);
+$stmt->bindValue(':schedule', $schedule, PDO::PARAM_STR);
+$stmt->bindValue(':role', $role, PDO::PARAM_STR);
     
-        if ($stmt->execute()) {
-            // Once registration is successful, send SMS notification to the registered user
-            if (!empty($phone_number)) {
-                $smsSent = $this->sendSMSNotification($phone_number, $schedule, $school_id, $password);
+            if ($stmt->execute()) {
+                if (!empty($phone_number)) {
+                    // error_log("SQL Error: " . implode(", ", $stmt->errorInfo()));
+                    // return "Database error: " . implode(", ", $stmt->errorInfo());
+                    $smsSent = $this->sendSMSNotification($phone_number, $schedule, $school_id, $password);
     
-                if ($smsSent) {
-                    return true; // Registration and SMS sending successful
-                } else {
-                    // If SMS sending fails, delete the user and return false
-                    $this->deleteUserByPhone($phone_number);
-                    return false; 
+                    if (!$smsSent) {
+                        error_log("SMS failed for: " . $phone_number);
+                        return "Registration successful, but SMS failed.";
+                    }
                 }
+                return true;
+            } else {
+                error_log("Insert failed: " . implode(", ", $stmt->errorInfo()));
+                return "Database error.";
             }
+        } catch (Exception $e) {
+            error_log("Exception: " . $e->getMessage());
+            return "An error occurred.";
         }
-        
-        return false; 
     }
     
     // Method to delete user if SMS is not sent
@@ -115,7 +116,7 @@ class UserModel {
         }
 
         $data = [
-            'api_token'    => '',
+            'api_token'    => '8ef0db8234c4f5c817ad067342f011f987c45c7e',
             'message'      => $message,
             'phone_number' => $phone_number,
             'sms_provider' => 1 
@@ -162,7 +163,7 @@ class UserModel {
    
     public function getUsersByRole($role) {
 
-        $query = "SELECT school_id, name, surname,  FROM " . $this->accounts . " WHERE role = :role";
+        $query = "SELECT school_id, name, surname  FROM " . $this->accounts . " WHERE role = :role";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':role', $role);
         $stmt->execute();
@@ -310,31 +311,31 @@ class UserModel {
         return  [ 
             '11' => [
                 'ICT' => [
-                    '1st Semester' => [
+                    '1st semester' => [
                         'Comprog 1 & 2', 'Oral Communication', 'PE 1', 'PR 1', 'Komunikasyon at Pananaliksik',
                         'General Mathematics', 'Earth & Life Science', 'Empowerment Technology', '21st Century',
                     ],
-                    '2nd Semester' => [
+                    '2nd semester' => [
                         'Comprog 3 & 4', 'PE 2', 'Reading and Writing', 'Pagbasa at Pagsusuri', 'Statistics and Probabilities',
                         'Personal Development', 'EAPP', 'Phy Sci', 'TechVoc',
                     ],
                 ],
                 'ABM' => [
-                    '1st Semester' => [
+                    '1st semester' => [
                         'Oral Com', 'Komunikasyon', 'Gen Math', 'Earth & Life', '21st Century', 'PE 1', 'PR 1',
                         'Empowerment Technology', 'Business Math', 'Organization & Management',
                     ],
-                    '2nd Semester' => [
+                    '2nd semester' => [
                         'Reading & Writing', 'Pagbasa', 'Stats & Prob', 'PE 2', 'Personal Development', 'Physical Science',
                         'EAPP', 'Filipino sa Larang ng Akademik', 'FABM 1', 'Principles Of Marketing',
                     ],
                 ],
                 'HE' => [
-                    '1st Semester' => [
+                    '1st semester' => [
                         'Oral Communication', 'General Mathematics', 'Cookery 1 & 2', 'Empowerment Technology', 
                         'Practical Research 1', 'Komunikasyon', 'Earth and Life Science', 'PE 1', '21st Century',
                     ],
-                    '2nd Semester' => [
+                    '2nd semester' => [
                         'Reading and Writing', 'Statistics and Probability', 'TechVoc', 'PE 2', 'Physical Science', 
                         'Cookery 3 & 4', 'Pagbasa', 'Personal Development', 'EAPP',
                     ],
@@ -343,27 +344,30 @@ class UserModel {
             '12' => [
                 
                 'HUMMS' => [
-                    '1st Semester' => ['UCSP', 'Entrepreneurship', 'PE 3', 'Business Ethics', 'Business Finance', 'FABM 2'],
+                    '1st semester' => ['UCSP', 'Entrepreneurship', 'PE 3', 'Business Ethics', 'Business Finance', 'FABM 2'],
                     '2nd Semester' => ['Research in Daily Life', 'EAPP', 'Introduction to World Religions', 'PE 4', 'Capstone Project'],
                 ],
                 'ABM' => [
-                    '1st Semester' => ['UCSP', 'CPAR', 'Philosophy', 'PE 3', 'PR 2', 'Entrepreneurship', 'FABM 2', 'Applied Economics'],
-                    '2nd Semester' => ['Business Ethics', 'Business Finance', 'MIL', 'Business Enterprise', 'I.I.I', 'PE 4'],
+                    '1st semester' => ['UCSP', 'CPAR', 'Philosophy', 'PE 3', 'PR 2', 'Entrepreneurship', 'FABM 2', 'Applied Economics'],
+                    '2nd semester' => ['Business Ethics', 'Business Finance', 'MIL', 'Business Enterprise', 'I.I.I', 'PE 4'],
                 ],
                 'ict' => [
-                    '1st Semester' => ['CPAR', 'Intro to Philo', 'CSS 1 & 2', 'Entrepreneurship', 'PE 3', 'PR 2', 'UCSP'],
-                    '2nd Semester' => ['MIL', 'PE 4', 'I.I.I', 'CHS 3 & 4', 'Work Immersion'],
+                    '1st semester' => ['CPAR', 'Intro to Philo', 'CSS 1 & 2', 'Entrepreneurship', 'PE 3', 'PR 2', 'UCSP'],
+                    '2nd semester' => ['MIL', 'PE 4', 'I.I.I', 'CHS 3 & 4', 'Work Immersion'],
                 ],
                 'HE' => [
-                    '1st Semester' => ['Entrepreneurship', 'Practical Research 2', 'PE 3', 'FBS', 'CPAR', 'UCSP', 'Intro to Philosophy'],
-                    '2nd Semester' => ['Work Immersion', 'Capstone Project', 'MIL', 'EAPP', 'PE 4', 'Cookery'],
+                    '1st semester' => ['Entrepreneurship', 'Practical Research 2', 'PE 3', 'FBS', 'CPAR', 'UCSP', 'Intro to Philosophy'],
+                    '2nd semester' => ['Work Immersion', 'Capstone Project', 'MIL', 'EAPP', 'PE 4', 'Cookery'],
                 ],
             ],
         ]; 
         
     }
  
-
+    public function getSubjects($grade, $strand, $semester) {
+        return $this->subjects[$grade][$strand][$semester] ?? [];
+    }
+    
      // Fetch user details with grades
      public function getUserGrades($user_id) {
         $query = "SELECT users.id, users.name, users.surname, users.grade AS user_grade, users.semester, users.scholar, users.school_id, user_grades.grade AS grade_from_user_grades
@@ -406,6 +410,28 @@ class UserModel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getUserGradesWithAdviser($user_id) {
+        $query = "
+            SELECT 
+                u.surname, 
+                u.user_grades, 
+                ug.grade,
+                u.adviser_name
+            FROM 
+                users u
+            JOIN 
+                user_grades ug ON u.user_id = ug.user_id
+            WHERE 
+                u.user_id = :user_id
+        ";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        return $stmt;
+    }
+    
+    
     
     
 

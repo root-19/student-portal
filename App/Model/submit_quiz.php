@@ -21,27 +21,22 @@ $quizId = $data['quiz_id'];
 $userId = $_SESSION['user_id']; // Ensure the user is logged in
 
 try {
-    // Begin a transaction
     $db->beginTransaction();
-
-    $correctCount = 0; // Initialize correct answers count
+    $correctCount = 0;
 
     foreach ($answers as $answer) {
         $questionId = $answer['question_id'];
         $answerId = $answer['answer_id'];
-        $isCorrect = $answer['is_correct']; // Passed from the client side (0 or 1)
+        $isCorrect = intval($answer['is_correct']);
 
-        // Increment correct count if the answer is correct
-        if ($isCorrect == 1) {
+        if ($isCorrect === 1) {
             $correctCount++;
         }
 
-        // Insert the user's answer into a quiz_attempts table
         $stmt = $db->prepare("
             INSERT INTO quiz_attempts (user_id, quiz_id, question_id, answer_id, is_correct, attempt_date) 
             VALUES (:user_id, :quiz_id, :question_id, :answer_id, :is_correct, NOW())
         ");
-
         $stmt->execute([
             ':user_id' => $userId,
             ':quiz_id' => $quizId,
@@ -51,11 +46,25 @@ try {
         ]);
     }
 
-    // Insert total correct count into user_scores table
-    $scoreStmt = $db->prepare("
-        INSERT INTO user_scores (user_id, quiz_id, correct_count, attempt_date)
-        VALUES (:user_id, :quiz_id, :correct_count, NOW())
-    ");
+    // Check if the user has already taken the quiz
+    $checkStmt = $db->prepare("SELECT id FROM user_scores WHERE user_id = :user_id AND quiz_id = :quiz_id");
+    $checkStmt->execute([':user_id' => $userId, ':quiz_id' => $quizId]);
+    $existingScore = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($existingScore) {
+        // Update existing score
+        $scoreStmt = $db->prepare("
+            UPDATE user_scores 
+            SET correct_count = :correct_count, attempt_date = NOW() 
+            WHERE user_id = :user_id AND quiz_id = :quiz_id
+        ");
+    } else {
+        // Insert new score
+        $scoreStmt = $db->prepare("
+            INSERT INTO user_scores (user_id, quiz_id, correct_count, attempt_date)
+            VALUES (:user_id, :quiz_id, :correct_count, NOW())
+        ");
+    }
 
     $scoreStmt->execute([
         ':user_id' => $userId,
@@ -63,10 +72,8 @@ try {
         ':correct_count' => $correctCount
     ]);
 
-    // Commit the transaction
     $db->commit();
 
-    // Send success response with correct count and user ID
     http_response_code(200);
     echo json_encode([
         'message' => 'Answers submitted successfully',
@@ -74,10 +81,7 @@ try {
         'correct_count' => $correctCount
     ]);
 } catch (Exception $e) {
-    // Roll back the transaction on error
     $db->rollBack();
-    http_response_code(500); // Internal server error
-    echo json_encode(['error' => 'Failed to submit answers', 'details' => $e->getMessage()]);
-    exit;
+    http_response_code(500);
+    echo json_encode(['error' => 'An error occurred while submitting your answers.']);
 }
-?>

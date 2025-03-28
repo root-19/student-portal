@@ -59,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $schedule = $_POST['schedule'] ?? null;
 
     // Validate required fields
-    if (!$gender || !$scholar) {
-        $message = "Please select both gender and scholar type.";
+    if (!$gender || !$scholar || !$lrn_number) {
+        $message = "Please fill in all required fields.";
     } else {
         // Call the registerUser method to handle user registration
         $result = $auth->registerUser(
@@ -80,16 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             $password,
             $adviser,
             $semester,
-            $schedule,
+            $schedule
         );
 
         if ($result === true) {
             $message = "Registration successful!";
         } else {
             $message = $result;
+        }
     }
-}
-
 
 }
 ?>
@@ -122,7 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                 <option value="esc-50%-off">esc-50% off</option>
                 <option value="Als/balik">Als/balik </option>
             </select>
-            <input type="text" name="lrn_number" placeholder="LRN Number" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="text" name="lrn_number" placeholder="LRN Number" required 
+       pattern="\d{12}" 
+       title="LRN should be exactly 12 digits" 
+       class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="text" name="school_id" placeholder="School ID" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <input type="date" name="date_of_birth" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <select name="grade" required class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -136,9 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <option value="" disabled selected>Select Adviser</option>
     <?php if (!empty($teachers)): ?>
         <?php foreach ($teachers as $teacher): ?>
-            <option value="<?= $teacher['id']; ?>">
-                <?= htmlspecialchars($teacher['name'] . " " . $teacher['surname']); ?>
-            </option>
+            <option value="<?= htmlspecialchars($teacher['name']);?>">
+    <?= htmlspecialchars($teacher['name'] . " " . $teacher['surname']); ?>
+</option>
         <?php endforeach; ?>
     <?php else: ?>
         <option value="" disabled>No Teachers Available</option>

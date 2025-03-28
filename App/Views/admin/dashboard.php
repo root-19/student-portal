@@ -98,7 +98,7 @@ foreach ($reactionsData as $row) {
             <p class="text-3xl font-bold mt-2"><?php echo $announcementCount; ?></p>
         </div>
 
-        <div class="bg-yellow-500cd  text-white p-6 rounded-lg shadow-md flex flex-col items-center">
+        <div class="bg-yellow-500  text-white p-6 rounded-lg shadow-md flex flex-col items-center">
             <h2 class="text-xl font-semibold">Total Candidates</h2>
             <p class="text-3xl font-bold mt-2"><?php echo $candidateCount; ?></p>
         </div>

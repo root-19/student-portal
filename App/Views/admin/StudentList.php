@@ -26,7 +26,7 @@ foreach ($users as $user) {
 
 
     <?php include_once "./layout/sidebar.php"; ?>
-    <div class="container mx-auto mt-10">
+    <div class="h-screen overflow-y-auto p-6">
     <h1 class="text-3xl font-semibold mb-6 text-gray-800">Students Data</h1>
 
     <!-- Search Bar -->

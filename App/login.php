@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 <div>
                     <input type="password" name="password" placeholder="Password" required class="w-full p-3 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
-                <button type="submit" name="login" class="w-full p-3 bg-orange-600 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" >Login</button>
+                <button type="submit" name="login" class="w-full p-3 bg-green-600 bg-opacity-80 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" >Login</button>
             </form>
 
             <!-- Forgot Password Link -->

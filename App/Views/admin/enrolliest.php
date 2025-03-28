@@ -42,7 +42,7 @@ $acceptedQuery = "SELECT
                     u.semester
                   FROM enrollments e
                   JOIN users u ON e.user_id = u.id
-                  WHERE e.enrollment_status = 'accepted'
+                  WHERE e.enrollment_status = 'approved'
                   ORDER BY e.created_at DESC"; 
 
 $acceptedStmt = $db->prepare($acceptedQuery);

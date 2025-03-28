@@ -11,31 +11,41 @@ class Announcement {
 
     public function __construct() {
         $this->db = new Database();
-        $this->conn = $this->db->connect();
+        $this->db = $this->db->connect();
     }
 
     public function createAnnouncement($title, $content, $userId) {
-        // Insert announcement into the database
-        $query = "INSERT INTO announcements (title, content, date_created, user_id) VALUES (:title, :content, NOW(), :user_id)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':title', $title);
-        $stmt->bindParam(':content', $content);
-        $stmt->bindParam(':user_id', $userId);  // Bind user_id (creator of the announcement)
-        $stmt->execute();
+        try {
+            $query = "INSERT INTO announcements (title, content, date_created, user_id) VALUES (:title, :content, NOW(), :user_id)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':title', $title);
+            $stmt->bindParam(':content', $content);
+            $stmt->bindParam(':user_id', $userId);
+            
+            if (!$stmt->execute()) {
+                throw new Exception("Failed to insert announcement.");
+            }
+            
+            $announcementId = $this->db->lastInsertId();
     
-        $announcementId = $this->conn->lastInsertId();
+            if (!$announcementId) {
+                throw new Exception("Failed to retrieve last inserted ID.");
+            }
     
-        // Notify all users with the "user" role
-        $this->notifyUsers($announcementId, $title, $content);
+            // Notify users
+            $this->notifyUsers($announcementId, $title, $content);
     
-        return $announcementId; // Return the ID of the created announcement
+            return $announcementId;
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
     }
     
 
     private function notifyUsers($announcementId, $title, $content) {
         // Get all users with the role 'user'
         $query = "SELECT email FROM users WHERE role = 'user'";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -58,7 +68,7 @@ class Announcement {
 
             // Loop through all users and send them the email
             foreach ($users as $user) {
-                $mail->addAddress($user['email']); // Add each user email to the recipient list
+                $mail->addAddress($user['email']);
 
                 // Email content
                 $mail->Subject = "New Announcement: $title";
@@ -67,12 +77,14 @@ class Announcement {
                 // Send email
                 $mail->send();
                 $mail->clearAddresses(); // Clear previous recipient
+                // $mail->SMTPDebug = 2;
             }
 
             echo 'Emails have been sent.';
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            echo '<div class="text-center text-red-600 mt-4">Error: ' . $e->getMessage() . '</div>';
         }
+        
     }
 
     public function getAnnouncementsWithReactions() {
@@ -86,7 +98,7 @@ FROM announcements a
 LEFT JOIN reactions r ON a.announcement_id = r.announcement_id
 GROUP BY a.announcement_id 
 ORDER BY a.date_created DESC;";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -96,7 +108,7 @@ ORDER BY a.date_created DESC;";
             INSERT INTO reactions (announcement_id, user_id, reaction_type)
             VALUES (:announcement_id, :user_id, :reaction_type)
             ON DUPLICATE KEY UPDATE reaction_type = :reaction_type";
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->db->prepare($query);
         $stmt->bindParam(':announcement_id', $announcementId);
         $stmt->bindParam(':user_id', $userId);
         $stmt->bindParam(':reaction_type', $reactionType);

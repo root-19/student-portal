@@ -23,7 +23,7 @@ try {
 
     // Update the enrollment status based on the action
     if ($action === 'accept') {
-        $updateEnrollmentQuery = "UPDATE enrollments SET enrollment_status = 'accepted' WHERE id = :enrollment_id";
+        $updateEnrollmentQuery = "UPDATE enrollments SET enrollment_status = 'approved' WHERE id = :enrollment_id";
     } elseif ($action === 'reject') {
         $updateEnrollmentQuery = "UPDATE enrollments SET enrollment_status = 'rejected' WHERE id = :enrollment_id";
     } else {

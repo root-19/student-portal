@@ -45,7 +45,7 @@ $candidatesQuery = "
            (SELECT COUNT(*) FROM votes WHERE votes.candidate_id = c.id) AS vote_count,
            (SELECT COUNT(*) FROM votes) AS total_votes
     FROM candidates c
-    ORDER BY c.id DESC";
+    ORDER BY vote_count DESC, c.id DESC"; // Order by vote count first, then by newest candidates
 $stmt = $db->prepare($candidatesQuery);
 $stmt->execute();
 ?>

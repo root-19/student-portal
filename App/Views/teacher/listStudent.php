@@ -20,7 +20,7 @@ if (isset($_GET['school_id'])) {
 
 <?php include "./layout/sidebar.php";?>
 
-<div class="container mx-auto text-black p-6">
+<div class="container mx-auto text-black p-6 overflow-y-auto max-h-[80vh] px-2 sm:px-4 scrollbar-hide">
 
     <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">students</h1>

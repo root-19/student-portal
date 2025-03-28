@@ -21,7 +21,14 @@ $gradeCount = 0;
 $hasGradeBelow75 = false;
 $averageGrade = 0;
 
+
 $userDetails = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Ensure $userDetails exists before accessing properties
+$userGrade = $userDetails ? $userDetails['user_grade'] : null;
+$semester = $userDetails ? $userDetails['semester'] : null;
+$isGrade12SecondSemester = ($userGrade == 12 && $semester == '2nd Semester');
+// $isGrade12SecondSemester = ($userGrade == 12 && $semester == '2nd Semester');
 
 // This code block handles the enrollment process for a user. It checks if the request method is POST and if the 'enroll' form field is set. It then retrieves the user details from the database and determines the appropriate enrollment fee based on the user's scholar status. The code then inserts the enrollment details into the 'enrollments' table in the database.
 
@@ -120,15 +127,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['enroll'])) {
 
 
 <?php include_once "./layout/sidebar.php"; ?>
-<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg text-black">
+<style>
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+</style>
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg text-black  overflow-y-auto max-h-[65vh] px-2 sm:px-4 scrollbar-hide">
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Grades</h1>
+    
+    <?php if (!$userDetails): ?>
+        <h1 class="text-5xl text-red-500">You have not received any grades yet. Please wait for your teacher's announcement.</h1>
+    <?php elseif ($isGrade12SecondSemester): ?>
+        <p class="text-red-500">Enrollment is not allowed for Grade 12 (2nd Semester) students.</p>
+    <?php endif; ?>
+
+    <?php if ($isGrade12SecondSemester): ?>
+        <p class="text-red-500">Enrollment is not allowed for Grade 12 (2nd Semester) students.</p>
+    <?php endif; ?>
 
     <?php
-    $isGrade12SecondSemester = ($userDetails['user_grade'] == 12 && $userDetails['semester'] == '2nd Semester');
+    // $isGrade12SecondSemester = ($userDetails['user_grade'] == 12 && $userDetails['semester'] == '2nd Semester');
     
+
     if ($isGrade12SecondSemester) {
         echo '<p class="text-red-500">Enrollment is not allowed for Grade 12 (2nd Semester) students.</p>';
     }
+    
 
     if ($stmt->rowCount() > 0): ?>
      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

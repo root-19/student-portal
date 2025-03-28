@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 require_once __DIR__ . '/../../Database/Database.php';
 require_once __DIR__ . '/../../Model/Candidate.php';
 
@@ -6,7 +9,9 @@ $database = new Database();
 $db = $database->connect();
 $candidate = new Candidate($db);
 
-$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1; 
+// $userId = isset($_SESSION['user_id']); 
+$userId = $_SESSION['user_id'] ?? null;
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = isset($_POST['id']) ? $_POST['id'] : null;
@@ -22,41 +27,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $candidates = $candidate->getCandidates();
+
+// Fetch all votes by user
+$userVotesQuery = "SELECT position FROM votes WHERE user_id = :user_id";
+$stmt = $db->prepare($userVotesQuery);
+$stmt->bindParam(':user_id', $userId);
+$stmt->execute();
+$userVotes = $stmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
 
 <?php include "./layout/sidebar.php"; ?>
+
 <style>
-/* Hide scrollbar but keep scrolling functionality */
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
-
 .scrollbar-hide {
-    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
-    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 </style>
 
-<div class="max-w-6xl mx-auto py-8 px-4 mr-15 text-black overflow-y-auto max-h-[80vh] scrollbar-hide ">
+<div class="max-w-6xl mx-auto py-8 px-4 mr-15 text-black overflow-y-auto max-h-[80vh] scrollbar-hide">
     <h1 class="text-4xl font-bold text-center mb-8">Candidates</h1>
     
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <?php foreach ($candidates as $candidate): ?>
             <div class="bg-white p-6 rounded-lg shadow-lg text-center hover:shadow-xl transition duration-300">
-                <img src="<?= htmlspecialchars($candidate['image']); ?>" alt="Candidate Image" class="w-full h-48 object-cover rounded-lg mb-4">
+                <img src="../../uploads/<?= htmlspecialchars($candidate['image']); ?>" alt="Candidate Image" class="w-full h-48 object-cover rounded-lg mb-4">
                 <h3 class="text-xl font-bold text-gray-800"><?= htmlspecialchars($candidate['name']); ?></h3>
                 <p class="text-gray-600 text-sm mb-4"><?= htmlspecialchars($candidate['position']); ?></p>
 
-                <?php
-                $position = $candidate['position'];
-                $query = "SELECT * FROM votes WHERE user_id = :user_id AND position = :position";
-                $stmt = $db->prepare($query);
-                $stmt->bindParam(':user_id', $userId);
-                $stmt->bindParam(':position', $position);
-                $stmt->execute();
+                <?php 
+                $userHasVoted = in_array($candidate['position'], $userVotes);
                 ?>
 
-                <?php if ($stmt->rowCount() > 0): ?>
+                <?php if ($userHasVoted): ?>
                     <button class="bg-green-300 text-gray-500 px-4 py-2 rounded cursor-not-allowed">
                         Voted
                     </button>
@@ -70,7 +76,7 @@ $candidates = $candidate->getCandidates();
                     </form>
                 <?php endif; ?>
 
-                <p class="text-sm text-green-800 mt-3">Votes: <?= $candidate['votes']; ?></p>
+                <p class="text-sm text-green-800 mt-3">Votes: <?= htmlspecialchars($candidate['votes']); ?></p>
             </div>
         <?php endforeach; ?>
     </div>

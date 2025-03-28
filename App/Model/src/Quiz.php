@@ -34,4 +34,13 @@ class Qiuz {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function saveAnswer($questionId, $answerText, $isCorrect) {
+        $query = "INSERT INTO answers (question_id, answer_text, is_correct) VALUES (:question_id, :answer_text, :is_correct)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':question_id', $questionId);
+        $stmt->bindParam(':answer_text', $answerText);
+        $stmt->bindParam(':is_correct', $isCorrect);
+        $stmt->execute();
+    }
 }

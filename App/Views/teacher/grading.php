@@ -1,42 +1,47 @@
 <?php
 require_once '../../Database/Database.php';
 require_once '../../Controller/UserModel.php';
+require_once '../../Model/SubjectManager.php';
 
 $database = new Database();
 $db = $database->connect();
 $userModel = new UserModel($db);
+$subjectManager = new SubjectManager();
 
-// Fetch users with advisers
 $results = $userModel->UsersWithAdvisers();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Save grades into the database
-    $userId = $_POST['user_id']; // The primary key from the `users` table
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_grades'])) {
+    $userId = $_POST['user_id'];
     $grades = $_POST['grades'] ?? [];
-    
+
+    // Delete previous grades only for this specific user
+    $deleteStmt = $db->prepare("DELETE FROM user_grades WHERE user_id = :user_id");
+    $deleteStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $deleteStmt->execute();
+
+    // Insert the new grades for this user
     foreach ($grades as $subject => $grade) {
-        // Insert grade into the database
         $stmt = $db->prepare("INSERT INTO user_grades (user_id, subject, grade) VALUES (:user_id, :subject, :grade)");
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT); // Bind as integer
-        $stmt->bindParam(':subject', $subject, PDO::PARAM_STR); // Bind as string
-        $stmt->bindParam(':grade', $grade, PDO::PARAM_STR); // Bind as string/float
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindParam(':subject', $subject, PDO::PARAM_STR);
+        $stmt->bindParam(':grade', $grade, PDO::PARAM_STR);
         $stmt->execute();
     }
 
+    // Show success message
     echo '<script>
-    document.addEventListener("DOMContentLoaded", function() {
         Swal.fire({
             title: "Success!",
-            text: "Grades saved successfully!",
+            text: "Grades updated successfully!",
             icon: "success",
             confirmButtonText: "OK"
         }).then(() => {
-            window.location.href = "index.php"; // Redirect after alert
+            window.location.href = "profile.php";
         });
-    });
-  </script>';
+    </script>';
 }
 ?>
+
 <?php include "./layout/sidebar.php"; ?>
 
 <div class="container mx-auto px-6 py-8 text-black">
@@ -46,16 +51,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($results)) : ?>
             <?php foreach ($results as $row) : ?>
                 <?php
-                // Extract user details
-                $userId = $row['user_school_id']; // The actual user ID from the database
+                $userId = $row['user_school_id'];
                 $userName = $row['user_name'] . ' ' . $row['user_surname'];
-                $grade = $row['user_grade'];
-                $strand = strtolower($row['user_strand']);
-                $semester = $row['user_semester'];
+                $grade = trim($row['user_grade']);
+                $strand = strtoupper(trim($row['user_strand']));
+                $semester = trim($row['user_semester']);
 
-                // Fetch predefined subjects
-                $subjects = $userModel->getPredefinedSubjects()[$grade][$strand][$semester] ?? [];
+                $subjects = $subjectManager->getSubjects($grade, $strand, $semester);
+
+                // Fetch the existing grades for the user
+                $existingGradesStmt = $db->prepare("SELECT subject, grade FROM user_grades WHERE user_id = :user_id");
+                $existingGradesStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+                $existingGradesStmt->execute();
+                $existingGrades = $existingGradesStmt->fetchAll(PDO::FETCH_KEY_PAIR);
                 ?>
+
+                <!-- Separate form for each user -->
                 <form action="" method="POST" class="bg-white p-4 rounded-lg shadow-md">
                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($userId); ?>">
 
@@ -66,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         Semester: <?php echo htmlspecialchars($semester); ?>
                     </h2>
 
-                    <!-- Display Subjects and Input for Grades -->
                     <table class="min-w-full divide-y divide-gray-200 mt-4">
                         <thead class="bg-gray-100">
                             <tr>
@@ -75,22 +85,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            <?php foreach ($subjects as $subject) : ?>
+                            <?php if (!empty($subjects)) : ?>
+                                <?php foreach ($subjects as $subject) : ?>
+                                    <tr>
+                                        <td class="px-4 py-2"><?php echo htmlspecialchars($subject); ?></td>
+                                        <td class="px-4 py-2">
+                                            <input type="number" name="grades[<?php echo htmlspecialchars($subject); ?>]" 
+                                                class="border border-gray-300 rounded px-2 py-1 w-20" 
+                                                min="0" max="100" step="0.01" 
+                                                value="<?php echo isset($existingGrades[$subject]) ? htmlspecialchars($existingGrades[$subject]) : ''; ?>" 
+                                                required>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else : ?>
                                 <tr>
-                                    <td class="px-4 py-2"><?php echo htmlspecialchars($subject); ?></td>
-                                    <td class="px-4 py-2">
-                                        <input type="number" name="grades[<?php echo htmlspecialchars($subject); ?>]" 
-                                               class="border border-gray-300 rounded px-2 py-1 w-20" 
-                                               min="0" max="100" step="0.01" required>
+                                    <td colspan="2" class="px-4 py-2 text-red-500">
+                                        No subjects found for this grade, strand, and semester.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
 
-                    <button type="submit" class="mt-4 bg-green-800 text-white px-4 py-2 rounded">
-                        Submit Grades
-                    </button>
+                    <?php if (!empty($subjects)) : ?>
+                        <button type="submit" name="submit_grades" class="mt-4 bg-green-800 text-white px-4 py-2 rounded">
+                            Submit Grades
+                        </button>
+                    <?php endif; ?>
                 </form>
             <?php endforeach; ?>
         <?php else : ?>
@@ -98,4 +120,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

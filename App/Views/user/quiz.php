@@ -19,13 +19,18 @@ if ($user) {
     $userStrand = $user['strand'];
 
     $stmt = $db->prepare("
-        SELECT q.id, q.title 
-        FROM quizzes q
-        INNER JOIN quiz_targets qt ON q.id = qt.quiz_id
-        WHERE qt.section = ? AND qt.strand = ?
-    ");
-    $stmt->execute([$userSection, $userStrand]);
-    $quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    SELECT q.id, q.title 
+    FROM quizzes q
+    INNER JOIN quiz_targets qt ON q.id = qt.quiz_id
+    WHERE qt.section = ? 
+    AND qt.strand = ?
+    AND q.id NOT IN (
+        SELECT quiz_id FROM quiz_attempts WHERE user_id = ?
+    )
+");
+$stmt->execute([$userSection, $userStrand, $userId]);
+$quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } else {
     $quizzes = [];
 }
@@ -161,7 +166,7 @@ resetTimeout();
 
                 }).then((result) => {
                     if(result.isCorrect) {
-                        window.location.href = './index.php';
+                        window.location.href = 'quiz.php';
                     }
                 });
             } else if (data.error) {
